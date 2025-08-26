@@ -2,917 +2,1491 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="NeonX Pro - App de Proxy Avanzada con Diseño 3D y Efectos RGB">
-  <title>HttpX Pro v3.0 | BerMatMods</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&family=Rajdhani:wght@500&family=Press+Start+2P&display=swap" rel="stylesheet" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Yape - Banco de Crédito</title>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    /* Variables Globales */
+    /* ===== VARIABLES GLOBALES (BCP THEME) ===== */
     :root {
-      --bg: #0a0e17;
-      --bg-card: #111827;
-      --bg-deep: #0f172a;
-      --text: #e0e7ff;
-      --text-light: #94a3b8;
-      --primary: #3b82f6;
-      --primary-glow: #60a5fa;
-      --secondary: #8b5cf6;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --accent: #06b6d4;
-      --border: #334155;
-      --font-main: 'Orbitron', sans-serif;
-      --font-code: 'Exo 2', monospace;
-      --font-title: 'Press Start 2P', cursive;
-      --glow-primary: 0 0 15px rgba(59, 130, 246, 0.7);
-      --glow-accent: 0 0 15px rgba(6, 182, 212, 0.7);
-      --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.3);
-      --radius: 16px;
-      --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    .light-mode {
-      --bg: #f1f5f9;
-      --bg-card: #ffffff;
-      --bg-deep: #e2e8f0;
-      --text: #1e293b;
-      --text-light: #64748b;
-      --border: #cbd5e1;
-      --glow-primary: 0 0 10px rgba(59, 130, 246, 0.4);
-      --shadow-card: 0 5px 15px rgba(0, 0, 0, 0.1);
+      --bcp-blue: #0068C7;
+      --bcp-green: #00B56F;
+      --bcp-light: #E8F5E9;
+      --white: #ffffff;
+      --text: #333333;
+      --text-secondary: #666666;
+      --border: #e0e0e0;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --bg-primary: var(--bcp-blue);
+      --accent-color: var(--bcp-green);
+      --transition: all 0.3s ease;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
     }
 
     body {
-      font-family: var(--font-main);
-      background: var(--bg);
+      background-color: var(--bg-primary);
       color: var(--text);
-      transition: var(--transition);
-      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      perspective: 1000px;
+      position: relative;
     }
 
-    /* Fondo con partículas animadas */
-    .bg-particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -3;
-      overflow: hidden;
+    .container {
+      max-width: 414px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      background: var(--bg-primary);
     }
 
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.5;
-      pointer-events: none;
-      animation: float 15s infinite linear;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.7; }
-      90% { opacity: 0.7; }
-      100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
-    }
-
-    /* Grid 3D fondo */
-    .bg-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
-      background-size: 50px 50px;
-      z-index: -2;
-      transform: rotateX(60deg);
-      pointer-events: none;
-      opacity: 0.1;
-    }
-
-    /* Header con efecto 3D */
-    .header {
-      position: sticky;
-      top: 0;
+    /* ===== HEADER ===== */
+    .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.2rem 1.5rem;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      padding: 20px 16px;
+      color: white;
+      position: relative;
       z-index: 10;
-      transform: translateZ(50px);
-      box-shadow: var(--shadow-card);
     }
 
-    .logo {
-      font-family: var(--font-title);
-      font-size: 1.4rem;
-      letter-spacing: 1px;
+    .top-bar h1 {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin: 0;
     }
 
-    .neon-text {
-      color: var(--primary);
-      text-shadow: var(--glow-primary);
-      animation: pulse 2s infinite alternate;
+    .top-bar .status {
+      font-size: 0.8em;
+      background: #fbbd00;
+      color: black;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
     }
 
-    @keyframes pulse {
-      0% { text-shadow: 0 0 5px #3b82f6; }
-      100% { text-shadow: 0 0 20px #3b82f6, 0 0 30px #60a5fa; }
+    .top-bar .icons {
+      display: flex;
+      gap: 20px;
     }
 
-    .version {
-      font-size: 0.7rem;
-      opacity: 0.7;
-    }
-
-    .btn-icon {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
+    .top-bar .icons i {
+      font-size: 1.5em;
+      color: white;
       cursor: pointer;
-      color: var(--text);
+    }
+
+    /* ===== MENÚ HAMBURGUESA ===== */
+    .menu-toggle {
+      position: absolute;
+      top: 20px;
+      left: 16px;
+      font-size: 1.5em;
+      color: white;
+      cursor: pointer;
+      z-index: 100;
       transition: var(--transition);
     }
 
-    .btn-icon:hover {
+    .menu-toggle:hover {
       transform: scale(1.1);
-      color: var(--primary);
     }
 
-    /* Sidebar 3D */
-    .sidebar {
+    .menu-overlay {
       position: fixed;
       top: 0;
-      left: -300px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 99;
+      display: none;
+      backdrop-filter: blur(4px);
+    }
+
+    .menu-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 280px;
       height: 100%;
-      background: var(--bg-deep);
-      border-right: 1px solid var(--border);
+      background: var(--white);
       z-index: 100;
-      padding: 5rem 1rem 2rem;
-      transform: translateZ(30px);
-      box-shadow: 5px 0 20px rgba(0, 0, 0, 0.4);
-      transition: left 0.5s cubic-bezier(0.68, -0.55, 0.26, 1.55);
+      transform: translateX(-100%);
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      padding: 80px 16px 20px;
+      overflow-y: auto;
+      box-shadow: 2px 0 15px rgba(0,0,0,0.1);
     }
 
-    .sidebar.open {
-      left: 0;
+    .menu-sidebar.active {
+      transform: translateX(0);
     }
 
-    .sidebar ul {
-      list-style: none;
+    .menu-header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .sidebar li {
-      margin: 1.2rem 0;
-      transform: translateZ(20px);
+    .menu-header img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      border: 3px solid var(--bcp-blue);
+      transition: var(--transition);
     }
 
-    .sidebar a {
+    .menu-header img:hover {
+      transform: scale(1.05);
+    }
+
+    .menu-header h3 {
+      color: var(--bcp-blue);
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+
+    .menu-item {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 12px;
       color: var(--text);
-      text-decoration: none;
-      padding: 0.9rem 1.2rem;
-      border-radius: var(--radius);
-      transition: var(--transition);
-      position: relative;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .menu-item:hover {
+      background: #f5f5f5;
+      transform: translateX(4px);
+    }
+
+    .menu-item i {
+      color: var(--bcp-blue);
+      font-size: 1.3em;
+    }
+
+    .menu-item .label {
+      font-weight: 500;
+    }
+
+    .menu-item .desc {
+      font-size: 0.8em;
+      color: #888;
+    }
+
+    /* ===== BANNER PROMOCIONAL (arriba del saldo) ===== */
+    .promo-banner-top {
+      margin: 20px 20px 0;
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s;
+    }
+
+    .promo-banner-top:hover {
+      transform: scale(1.02);
+    }
+
+    .promo-banner-top img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      display: block;
+    }
+
+    /* ===== BANNER EN CONFIRMACIÓN (abajo del recibo) ===== */
+    .promo-banner-bottom {
+      margin: 20px 20px 15px;
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s;
+    }
+
+    .promo-banner-bottom:hover {
+      transform: scale(1.02);
+    }
+
+    .promo-banner-bottom img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      display: block;
+    }
+
+    /* ===== SERVICIOS ===== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .service-item {
+      text-align: center;
+      color: white;
+      font-size: 0.85em;
+      transition: transform 0.2s;
+    }
+
+    .service-item:hover {
+      transform: translateY(-4px);
+    }
+
+    .service-icon {
+      width: 70px;
+      height: 70px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s;
       overflow: hidden;
     }
 
-    .sidebar a::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
-      transition: 0.5s;
+    .service-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
     }
 
-    .sidebar a:hover::before {
-      left: 100%;
+    .service-icon img {
+      width: 60%;
+      height: 60%;
+      object-fit: contain;
+      transition: var(--transition);
     }
 
-    .sidebar a:hover {
-      background: var(--primary);
+    .service-icon:hover img {
+      filter: brightness(0.8);
+    }
+
+    /* ===== SALDO ===== */
+    .balance-card {
+      background: var(--white);
+      border-radius: 20px;
+      margin: 15px 20px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .balance-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--bcp-blue);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .balance-toggle:hover {
+      background: #0056a3;
+    }
+
+    .balance-toggle span {
       color: white;
-      transform: translateX(10px) scale(1.02);
+      font-weight: 600;
     }
 
-    .sidebar a.active {
-      background: var(--primary);
+    .balance-amount {
+      font-size: 2.2em;
+      font-weight: bold;
+      margin: 10px 0;
+      color: var(--text);
+      text-align: center;
+    }
+
+    /* ===== MOVIMIENTOS ===== */
+    .movements-toggle {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .movements-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .movements-toggle span {
+      color: var(--bcp-blue);
+      font-weight: 600;
+    }
+
+    .movements-toggle i {
+      color: var(--bcp-blue);
+      transition: var(--transition);
+    }
+
+    .movements-toggle:hover i {
+      transform: rotate(180deg);
+    }
+
+    /* ===== LISTA DE MOVIMIENTOS ===== */
+    .movements-list {
+      background: var(--white);
+      border-radius: 20px;
+      margin: 15px 20px;
+      padding: 10px 0;
+      box-shadow: var(--shadow);
+      max-height: 300px;
+      overflow-y: auto;
+      transition: var(--transition);
+    }
+
+    .movement-item {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.2s;
+    }
+
+    .movement-item:hover {
+      background: #f9f9f9;
+    }
+
+    .movement-icon {
+      width: 50px;
+      height: 50px;
+      background: #f0f0f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      transition: var(--transition);
+    }
+
+    .movement-icon i {
+      color: var(--bcp-green);
+      font-size: 1.3em;
+    }
+
+    .movement-info {
+      flex: 1;
+    }
+
+    .movement-name {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      font-size: 0.95em;
+    }
+
+    .movement-date {
+      font-size: 0.85em;
+      color: var(--text-secondary);
+    }
+
+    .movement-amount {
+      font-weight: bold;
+      color: var(--bcp-green);
+    }
+
+    /* ===== BOTONES GRANDES ===== */
+    .buttons-row {
+      display: flex;
+      gap: 16px;
+      padding: 0 20px;
+      margin: 20px 0;
+    }
+
+    .big-button {
+      flex: 1;
+      background: var(--bcp-green);
       color: white;
-      box-shadow: var(--glow-primary);
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 181, 111, 0.3);
     }
 
-    /* Main */
-    .main-content {
-      padding: 1.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-      transform: translateZ(20px);
+    .big-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 181, 111, 0.4);
     }
 
-    .section {
-      display: none;
-      padding: 2rem;
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-card);
-      border: 1px solid var(--border);
-      animation: slideUp 0.6s ease;
-      transform: translateY(20px);
-      opacity: 0;
-    }
-
-    .section.active {
-      display: block;
-      opacity: 1;
+    .big-button:active {
       transform: translateY(0);
     }
 
-    @keyframes slideUp {
+    .big-button i {
+      font-size: 1.2em;
+    }
+
+    .big-button span {
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
+
+    /* ===== PANTALLA: INGRESAR NÚMERO Y MONTO ===== */
+    .send-screen {
+      background: var(--white);
+      border-radius: 20px;
+      margin: 20px 20px 15px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    h1, h2 {
-      margin-bottom: 1.5rem;
-      color: var(--primary);
-      text-shadow: var(--glow-primary);
+    .send-title {
+      font-size: 1.4em;
+      color: var(--bcp-blue);
+      margin-bottom: 16px;
       font-weight: 600;
     }
 
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.6rem;
-      font-weight: 500;
-      color: var(--text-light);
-    }
-
-    input, select, textarea {
+    .send-input {
       width: 100%;
-      padding: 0.9rem;
+      padding: 12px;
       border: 1px solid var(--border);
-      background: rgba(30, 41, 59, 0.5);
-      color: var(--text);
-      border-radius: 10px;
-      font-family: var(--font-code);
+      border-radius: 8px;
+      font-size: 1em;
+      margin: 10px 0;
       transition: var(--transition);
     }
 
-    input:focus, select:focus, textarea:focus {
+    .send-input:focus {
       outline: none;
-      border-color: var(--primary);
-      box-shadow: var(--glow-primary);
-      background: rgba(30, 41, 59, 0.8);
+      border-color: var(--bcp-blue);
+      box-shadow: 0 0 0 2px rgba(0, 104, 199, 0.2);
     }
 
-    /* Botones */
-    .btn {
-      padding: 0.8rem 1.5rem;
+    .send-amount {
+      font-size: 2.5em;
+      font-weight: bold;
+      margin: 15px 0;
+      text-align: center;
+      color: var(--bcp-blue);
+    }
+
+    .send-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .send-btn {
+      flex: 1;
+      padding: 12px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      font-size: 1em;
       cursor: pointer;
       font-weight: 600;
       transition: var(--transition);
-      margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
     }
 
-    .btn-primary {
-      background: var(--primary);
+    .send-btn.cancel {
+      background: #f5f5f5;
+      color: var(--text);
+    }
+
+    .send-btn.cancel:hover {
+      background: #e0e0e0;
+    }
+
+    .send-btn.send {
+      background: var(--bcp-green);
       color: white;
     }
 
-    .btn-secondary {
-      background: var(--secondary);
-      color: white;
+    .send-btn.send:hover {
+      background: #009a5c;
     }
 
-    .btn-success {
-      background: var(--success);
-      color: white;
-    }
-
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    /* Switch */
-    .switch {
+    /* ===== PANTALLA DE CONFIRMACIÓN ===== */
+    .confirm-container {
+      display: none;
+      margin: 20px 20px 15px;
       position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 30px;
+      animation: slideUp 0.5s ease;
     }
 
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .slider {
+    .global-close {
       position: absolute;
+      top: 15px;
+      right: 16px;
+      color: white;
+      font-size: 1.5em;
+      background: rgba(0,0,0,0.3);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 30px;
+      z-index: 10;
+      transition: var(--transition);
     }
 
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 24px;
-      width: 24px;
-      left: 4px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
+    .global-close:hover {
+      background: rgba(0,0,0,0.5);
+      transform: scale(1.1);
     }
 
-    input:checked + .slider {
-      background: linear-gradient(90deg, #10b981, #06b6d4);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(30px);
-    }
-
-    /* Cards de estado */
-    .status-card {
-      background: rgba(15, 23, 42, 0.5);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.2rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .status-value {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-shadow: var(--glow-accent);
-    }
-
-    /* Gráfico de red */
-    .network-graph {
-      width: 100%;
-      height: 120px;
-      background: rgba(15, 23, 42, 0.4);
-      border-radius: 10px;
-      margin: 1rem 0;
+    .confirm-screen {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      font-family: 'Segoe UI', sans-serif;
+      margin-top: 60px;
       position: relative;
-      overflow: hidden;
+      animation: popIn 0.4s ease;
     }
 
-    .graph-line {
-      position: absolute;
-      bottom: 50%;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--text-light);
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
-    .graph-pulse {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--success);
-      border-radius: 50%;
-      animation: pulseGraph 2s infinite;
+    .confirm-title {
+      font-size: 1.3em;
+      color: var(--bcp-blue);
+      font-weight: bold;
+      margin: 0;
+      text-align: center;
     }
 
-    @keyframes pulseGraph {
-      0% { transform: scaleY(1); opacity: 0.5; }
-      50% { transform: scaleY(5); opacity: 1; }
-      100% { transform: scaleY(1); opacity: 0.5; }
+    .confirm-amount {
+      font-size: 2.8em;
+      font-weight: bold;
+      margin: 10px 0;
+      text-align: center;
+      color: var(--text);
     }
 
-    /* Perfiles */
-    .profile-item {
-      background: rgba(30, 41, 59, 0.6);
-      padding: 1rem;
-      border-radius: 12px;
-      margin-bottom: 0.8rem;
-      border-left: 4px solid var(--primary);
+    .confirm-name {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 10px 0;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .confirm-date {
+      font-size: 0.9em;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .security-code {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin: 15px 0;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .security-code span {
+      font-size: 0.9em;
+      color: var(--text-secondary);
+      font-weight: bold;
+    }
+
+    .security-code i {
+      color: var(--bcp-green);
+      font-size: 1.2em;
+    }
+
+    .security-digits {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .digit {
+      width: 40px;
+      height: 40px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--text);
+      font-size: 1.2em;
+    }
+
+    .confirm-details {
+      margin-top: 20px;
+      font-size: 0.95em;
+      color: var(--text-secondary);
+      text-align: left;
+      padding: 0 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    /* ===== BOTÓN COMPARTIR DENTRO DEL RECIBO ===== */
+    .share-inside {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #f0f0f0;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bcp-blue);
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .share-inside:hover {
+      background: #e0e0e0;
+      transform: scale(1.1);
+    }
+
+    /* ===== ESCANEO QR ===== */
+    .scan-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scan-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .scan-frame {
+      width: 290px;
+      height: 290px;
+      border: 3px solid var(--bcp-green);
+      border-radius: 18px;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(0,181,111,0.5);
+    }
+
+    .scan-line {
+      width: 100%;
+      height: 5px;
+      background: var(--bcp-green);
+      position: absolute;
+      top: 0;
+      animation: scanLine 1.6s ease-in-out infinite;
+      box-shadow: 0 0 15px var(--bcp-green);
+    }
+
+    @keyframes scanLine {
+      0% { top: 0; }
+      100% { top: 285px; }
+    }
+
+    .scan-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: white;
+      color: black;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .scan-close:hover {
+      transform: scale(1.1);
+    }
+
+    /* ===== CHISPAS ===== */
+    .sparkles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1001;
+      display: none;
+    }
+
+    .spark {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-20px); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    /* ===== PANTALLAS ===== */
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 20px 0;
+      color: #aaa;
+      font-size: 0.8em;
+      margin-top: 20px;
+    }
+
+    /* ===== PANTALLA: INFORMACIÓN DE LA APP ===== */
+    .info-screen {
+      display: none;
+      background: var(--white);
+      border-radius: 20px;
+      margin: 30px 20px;
+      padding: 25px 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      max-width: 370px;
+      font-family: 'Segoe UI', sans-serif;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .info-screen h2 {
+      color: var(--bcp-blue);
+      font-size: 1.5em;
+      margin-bottom: 8px;
+    }
+
+    .info-screen p {
+      color: var(--text);
+      font-size: 1em;
+      margin: 8px 0;
+    }
+
+    .info-screen .dev-name {
+      font-weight: 600;
+      color: var(--bcp-green);
+      font-size: 1.1em;
+    }
+
+    .info-screen .github-link {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--bcp-blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .info-screen .github-link:hover {
+      text-decoration: underline;
+    }
+
+    .info-screen .github-link img {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+    }
+
+    .info-screen .footer-text {
+      color: #888;
+      font-size: 0.85em;
+      margin-top: 20px;
+    }
+
+    /* ===== EDITAR PERFIL ===== */
+    .profile-pic {
+      cursor: pointer;
       transition: var(--transition);
     }
 
-    .profile-item:hover {
-      transform: scale(1.02);
-      background: rgba(59, 130, 246, 0.1);
+    .profile-pic:hover {
+      filter: brightness(0.9);
     }
 
     /* Responsive */
-    @media (max-width: 600px) {
-      .header { padding: 1rem; }
-      .main-content { padding: 1rem; }
-      .section { padding: 1.2rem; }
-      h1, h2 { font-size: 1.4rem; }
-    }
-
-    /* Animaciones RGB */
-    .rgb-glow {
-      animation: rgbPulse 3s ease infinite;
-    }
-
-    @keyframes rgbPulse {
-      0% { box-shadow: 0 0 15px #3b82f6; }
-      25% { box-shadow: 0 0 15px #8b5cf6; }
-      50% { box-shadow: 0 0 15px #06b6d4; }
-      75% { box-shadow: 0 0 15px #10b981; }
-      100% { box-shadow: 0 0 15px #ef4444; }
-    }
-
-    /* Iconos SVG animados */
-    .animated-icon {
-      transition: transform 0.3s;
-    }
-
-    .animated-icon:hover {
-      transform: rotate(180deg) scale(1.2);
+    @media (max-width: 414px) {
+      .container {
+        width: 100%;
+      }
     }
   </style>
 </head>
-<body class="dark-mode">
+<body>
 
-  <!-- Fondo de partículas -->
-  <div class="bg-particles" id="particles"></div>
-  <div class="bg-grid"></div>
+  <div class="container">
 
-  <!-- Header -->
-  <header class="header">
-    <div class="logo">
-      <span class="neon-text">NEONX</span> <span class="version">PRO v3.0</span>
+    <!-- Menú hamburguesa -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
     </div>
-    <button id="theme-toggle" class="btn-icon">🌙</button>
-    <button id="menu-toggle" class="btn-icon">☰</button>
-  </header>
 
-  <!-- Sidebar -->
-  <nav id="sidebar" class="sidebar">
-    <ul>
-      <li><a href="#home" class="active"><i class="animated-icon">🏠</i> Inicio</a></li>
-      <li><a href="#tunnel"><i class="animated-icon">⚡</i> Túnel HTTP</a></li>
-      <li><a href="#socks"><i class="animated-icon">🔐</i> SOCKS5</a></li>
-      <li><a href="#pac"><i class="animated-icon">🌐</i> PAC & DNS</a></li>
-      <li><a href="#profiles"><i class="animated-icon">💾</i> Perfiles</a></li>
-      <li><a href="#logs"><i class="animated-icon">📜</i> Logs</a></li>
-      <li><a href="#settings"><i class="animated-icon">⚙️</i> Ajustes</a></li>
-      <li><a href="#about"><i class="animated-icon">ℹ️</i> Acerca de</a></li>
-    </ul>
-  </nav>
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
 
-  <!-- Contenido -->
-  <main class="main-content">
-
-    <!-- Inicio -->
-    <section id="home" class="section active">
-      <h1>Bienvenido a <span class="neon-text">NeonX Pro</span></h1>
-      <p>La app de proxy más avanzada con diseño futurista 3D, efectos RGB y soporte total para móviles.</p>
-      
-      <div class="status-card">
-        <div>Estado de Conexión</div>
-        <div class="status-value">✅ Conectado</div>
+    <div class="menu-sidebar" id="menuSidebar">
+      <div class="menu-header">
+        <img src="https://ui-avatars.com/api/?name=AnthZz+Berrocal&background=0068C7&color=fff" alt="Perfil" id="menuProfilePic">
+        <h3 id="menuName">AnthZz Berrocal</h3>
+        <p>_BerMat_Mods</p>
       </div>
 
-      <div class="status-card">
-        <div>Velocidad</div>
-        <div class="status-value">12.4 Mbps</div>
+      <div class="menu-item" onclick="showScreen('profile')">
+        <i class="fas fa-user"></i>
+        <div>
+          <div class="label">Perfil</div>
+          <div class="desc">Editar información</div>
+        </div>
       </div>
 
-      <div class="network-graph">
-        <div class="graph-line"></div>
-        <div class="graph-pulse" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="graph-pulse" style="left: 30%; animation-delay: 0.5s;"></div>
-        <div class="graph-pulse" style="left: 60%; animation-delay: 1s;"></div>
-        <div class="graph-pulse" style="left: 80%; animation-delay: 1.5s;"></div>
+      <div class="menu-item" onclick="showScreen('editBalance')">
+        <i class="fas fa-wallet"></i>
+        <div>
+          <div class="label">Editar Saldo</div>
+          <div class="desc">S/ <span id="menuBalance">27.00</span></div>
+        </div>
       </div>
 
-      <button class="btn btn-primary rgb-glow">Iniciar Conexión</button>
-    </section>
+      <div class="menu-item" onclick="alert('Créditos')">
+        <i class="fas fa-hand-holding-usd"></i>
+        <div>
+          <div class="label">Créditos</div>
+          <div class="desc">S/ 8000 disponibles</div>
+        </div>
+      </div>
 
-    <!-- Túnel HTTP -->
-    <section id="tunnel" class="section">
-      <h2>Túnel HTTP Avanzado</h2>
-      <div class="form-group">
-        <label>Host (Proxy)</label>
-        <input type="text" id="http-host" placeholder="103.10.23.10" />
+      <div class="menu-item" onclick="alert('Promociones')">
+        <i class="fas fa-percent"></i>
+        <div>
+          <div class="label">Promociones</div>
+          <div class="desc">Ofertas exclusivas</div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Puerto</label>
-        <input type="number" id="http-port" placeholder="8080" />
-      </div>
-      <div class="form-group">
-        <label>Método de Inyección</label>
-        <select id="http-method">
-          <option>GET / HTTP/1.1</option>
-          <option>CONNECT</option>
-          <option>POST</option>
-          <option>PROXY</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Host Header</label>
-        <input type="text" id="http-header" placeholder="X-Online-Host: google.com" />
-      </div>
-      <div class="form-group">
-        <label>Extra Headers (uno por línea)</label>
-        <textarea id="extra-headers" rows="3" placeholder="User-Agent: Mozilla/5.0...&#10;Connection: keep-alive"></textarea>
-      </div>
-      <button class="btn btn-primary" onclick="saveHttpConfig()">Guardar</button>
-    </section>
 
-    <!-- SOCKS5 -->
-    <section id="socks" class="section">
-      <h2>Configuración SOCKS5</h2>
-      <div class="form-group">
-        <label>IP del Servidor</label>
-        <input type="text" id="socks-ip" placeholder="192.168.1.1" />
+      <div class="menu-item" onclick="alert('Notificaciones')">
+        <i class="fas fa-bell"></i>
+        <div>
+          <div class="label">Notificaciones</div>
+          <div class="desc">Activadas</div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Puerto</label>
-        <input type="number" id="socks-port" placeholder="1080" />
-      </div>
-      <div class="form-group">
-        <label>Autenticación</label>
-        <label class="switch">
-          <input type="checkbox" id="socks-auth" />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="form-group" id="socks-auth-fields" style="display:none;">
-        <input type="text" id="socks-user" placeholder="Usuario" />
-        <input type="password" id="socks-pass" placeholder="Contraseña" />
-      </div>
-      <button class="btn btn-primary" onclick="saveSocksConfig()">Conectar</button>
-    </section>
 
-    <!-- PAC & DNS -->
-    <section id="pac" class="section">
-      <h2>PAC & DNS Personalizado</h2>
-      <div class="form-group">
-        <label>DNS (separados por coma)</label>
-        <input type="text" id="custom-dns" placeholder="8.8.8.8, 1.1.1.1, 9.9.9.9" />
+      <div class="menu-item" onclick="alert('Seguridad')">
+        <i class="fas fa-shield-alt"></i>
+        <div>
+          <div class="label">Seguridad</div>
+          <div class="desc">PIN, huella, facial</div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>URL del PAC</label>
-        <input type="url" id="pac-url" placeholder="http://tudominio.com/proxy.pac" />
-      </div>
-      <div class="form-group">
-        <label>Reglas de Exclusión (ej: *.local)</label>
-        <input type="text" id="pac-exclude" placeholder="*.local, 192.168.*" />
-      </div>
-      <button class="btn btn-primary" onclick="savePacConfig()">Guardar</button>
-    </section>
 
-    <!-- Perfiles -->
-    <section id="profiles" class="section">
-      <h2>Perfiles Guardados</h2>
-      <div class="profile-list" id="profile-list"></div>
-      <button class="btn btn-secondary" onclick="exportProfiles()">📤 Exportar</button>
-      <label class="btn btn-primary">
-        📥 Importar
-        <input type="file" id="import-file" accept=".json" onchange="importProfiles()" style="display:none;">
-      </label>
-    </section>
+      <div class="menu-item" onclick="alert('Soporte')">
+        <i class="fas fa-headset"></i>
+        <div>
+          <div class="label">Soporte</div>
+          <div class="desc">Chatea con nosotros</div>
+        </div>
+      </div>
 
-    <!-- Logs -->
-    <section id="logs" class="section">
-      <h2>Logs de Conexión</h2>
-      <div class="form-group">
-        <textarea id="logs-output" rows="8" readonly placeholder="Iniciando..."></textarea>
+      <div class="menu-item" onclick="alert('Ayuda')">
+        <i class="fas fa-question-circle"></i>
+        <div>
+          <div class="label">Ayuda</div>
+          <div class="desc">Centro de ayuda</div>
+        </div>
       </div>
-      <button class="btn btn-success" onclick="simulateLog()">Generar Log</button>
-      <button class="btn btn-danger" onclick="clearLogs()">Limpiar</button>
-    </section>
 
-    <!-- Ajustes -->
-    <section id="settings" class="section">
-      <h2>Ajustes Avanzados</h2>
-      <div class="form-group">
-        <label>Modo Oscuro</label>
-        <label class="switch">
-          <input type="checkbox" id="dark-mode-toggle" checked>
-          <span class="slider"></span>
-        </label>
+      <div class="menu-item" onclick="showScreen('infoScreen')">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <div class="label">Información de la app</div>
+          <div class="desc">Detalles del desarrollo</div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Efectos RGB</label>
-        <label class="switch">
-          <input type="checkbox" id="rgb-toggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="form-group">
-        <label>Fuente</label>
-        <select id="font-select">
-          <option value="Orbitron">Orbitron</option>
-          <option value="Exo 2">Exo 2</option>
-          <option value="Rajdhani">Rajdhani</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Animaciones</label>
-        <label class="switch">
-          <input type="checkbox" id="anim-toggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      <button class="btn btn-danger" onclick="resetApp()">Restablecer Todo</button>
-    </section>
 
-    <!-- Acerca de -->
-    <section id="about" class="section">
-      <h2>Acerca de NeonX Pro</h2>
-      <p><strong>Desarrollado por:</strong> AnthZz Berrocal - BerMatMods</p>
-      <p><strong>Versión:</strong> 3.0.0</p>
-      <p><strong>Plataforma:</strong> Web (móvil-first)</p>
-      <p><strong>Compatibilidad:</strong> 100% con GitHub Pages</p>
-      <p><strong>Licencia:</strong> Open Source (MIT)</p>
-      <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
-        Esta app es solo frontend. No almacena datos sensibles.
-      </p>
-    </section>
+      <div class="menu-item" onclick="alert('Términos')">
+        <i class="fas fa-file-alt"></i>
+        <div>
+          <div class="label">Términos y condiciones</div>
+        </div>
+      </div>
 
-  </main>
+      <div class="menu-item" onclick="alert('Privacidad')">
+        <i class="fas fa-lock"></i>
+        <div>
+          <div class="label">Privacidad</div>
+        </div>
+      </div>
+
+      <div class="menu-item" onclick="alert('Cerrar sesión')">
+        <i class="fas fa-sign-out-alt"></i>
+        <div>
+          <div class="label">Cerrar sesión</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="top-bar">
+      <i class="fas fa-user"></i>
+      <h1 id="greeting">Hola, AnthZz</h1>
+      <span class="status">Gratis</span>
+      <div class="icons">
+        <i class="fas fa-headset"></i>
+        <i class="fas fa-bell"></i>
+      </div>
+    </div>
+
+    <!-- Pantalla: Inicio -->
+    <div id="home" class="screen active">
+      <div class="services-grid">
+        <div class="service-item" onclick="startScan()">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/9FzMzGFm/Screenshot-20250823-104637.jpg" alt="Recargar celular">
+          </div>
+          <div>Recargar celular</div>
+        </div>
+        <div class="service-item" onclick="alert('Yapear servicios')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/QCvrFK0C/Screenshot-20250823-104730.jpg" alt="Yapear servicios">
+          </div>
+          <div>Yapear servicios</div>
+        </div>
+        <div class="service-item" onclick="alert('Promos')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/DwrKzZsf/Screenshot-20250823-104820.jpg" alt="Promos">
+          </div>
+          <div>Promos</div>
+        </div>
+        <div class="service-item" onclick="alert('Aprobar compras')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/Y9y5PmcR/Screenshot-20250823-104906.jpg" alt="Aprobar compras">
+          </div>
+          <div>Aprobar compras</div>
+        </div>
+        <div class="service-item" onclick="alert('Créditos')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/xTHdK9Hh/Screenshot-20250823-104933.jpg" alt="Créditos">
+          </div>
+          <div>Créditos</div>
+        </div>
+        <div class="service-item" onclick="alert('Tienda')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/pT42FSdP/Screenshot-20250823-105003.jpg" alt="Tienda">
+          </div>
+          <div>Tienda</div>
+        </div>
+        <div class="service-item" onclick="alert('Dólares')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/jjB9QYy3/Screenshot-20250823-105020.jpg" alt="Dólares">
+          </div>
+          <div>Dólares</div>
+        </div>
+        <div class="service-item" onclick="alert('Remesas')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/wvJrw4Vq/Screenshot-20250823-105050.jpg" alt="Remesas">
+          </div>
+          <div>Remesas</div>
+        </div>
+        <div class="service-item" onclick="alert('SOAT')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/RZFbkZRb/Screenshot-20250823-105128.jpg" alt="SOAT">
+          </div>
+          <div>SOAT</div>
+        </div>
+        <div class="service-item" onclick="alert('Viajar en bus')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/63sj4LND/Screenshot-20250823-105147.jpg" alt="Viajar en bus">
+          </div>
+          <div>Viajar en bus</div>
+        </div>
+        <div class="service-item" onclick="alert('Biométrica')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/qq41jJqw/Screenshot-20250823-105211.jpg" alt="Biométrica">
+          </div>
+          <div>Biométrica</div>
+        </div>
+        <div class="service-item" onclick="alert('Ver todo')">
+          <div class="service-icon">
+            <img src="https://i.postimg.cc/RVPgLzB1/Screenshot-20250823-105316.jpg" alt="Ver todo">
+          </div>
+          <div>Ver todo</div>
+        </div>
+      </div>
+
+      <!-- Banner promocional -->
+      <div class="promo-banner-top">
+        <img src="https://i.postimg.cc/85Mf0TWF/1755961504718.jpg" alt="Teletón 2025">
+      </div>
+
+      <div class="balance-card">
+        <div class="balance-toggle" onclick="toggleBalance()">
+          <span id="balanceToggleText">Mostrar saldo</span>
+          <span id="balanceAmount">S/ 2866</span>
+        </div>
+      </div>
+
+      <div class="movements-toggle" onclick="showScreen('movementsList')">
+        <span>Mostrar movimientos</span>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+
+      <div id="movementsList" class="screen movements-list"></div>
+
+      <div class="buttons-row">
+        <button class="big-button" onclick="startScan()">
+          <i class="fas fa-qrcode"></i>
+          <span>ESCANEAR QR</span>
+        </button>
+        <button class="big-button yapear" onclick="showSendScreen()">
+          <i class="fas fa-paper-plane"></i>
+          <span>YAPEAR</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pantalla: Ingresar número y monto -->
+    <div id="sendScreen" class="screen send-screen">
+      <div class="send-title">¿A quién vas a yapear?</div>
+      <input type="tel" id="sendPhone" placeholder="987 654 321" class="send-input">
+      <div class="send-title">Nombre del destinatario</div>
+      <input type="text" id="sendName" placeholder="AnthZz Berrocal" value="AnthZz Berrocal" class="send-input">
+      <div class="send-title">¿Cuánto?</div>
+      <div class="send-amount">S/ <span id="sendAmount">0.00</span></div>
+      <input type="number" id="amountInput" placeholder="0.00" class="send-input" oninput="updateAmount(this.value)">
+      <div class="send-buttons">
+        <button class="send-btn cancel" onclick="goBack()">Cancelar</button>
+        <button class="send-btn send" onclick="confirmSend()">Yapear</button>
+      </div>
+    </div>
+
+    <!-- Pantalla: Confirmación -->
+    <div id="confirmContainer" class="screen confirm-container">
+      <div class="global-close" onclick="goBack()">
+        <i class="fas fa-times"></i>
+      </div>
+      <div class="confirm-screen">
+        <button class="share-inside" onclick="alert('Compartir recibo')">
+          <i class="fas fa-share-alt"></i>
+        </button>
+        <div class="confirm-title">¡Yapeaste!</div>
+        <div class="confirm-amount">S/ <span id="confirmAmount">1</span></div>
+        <div class="confirm-name"><span id="confirmName">AnthZz Berrocal</span></div>
+        <div class="confirm-date">
+          <i class="fas fa-calendar"></i> <span id="confirmDate">22 ago. 2025</span> | <i class="fas fa-clock"></i> <span id="confirmTime">10:35 p.m.</span>
+        </div>
+        <div class="security-code">
+          <span>CÓDIGO DE SEGURIDAD</span>
+          <i class="fas fa-info-circle"></i>
+          <div class="security-digits">
+            <div class="digit" id="code1">4</div>
+            <div class="digit" id="code2">6</div>
+            <div class="digit" id="code3">4</div>
+          </div>
+        </div>
+        <div class="confirm-details">
+          <div class="detail-row">
+            <span>Nro. de celular</span>
+            <span id="confirmPhone">*** *** 777</span>
+          </div>
+          <div class="detail-row">
+            <span>Destino</span>
+            <span>Yape</span>
+          </div>
+          <div class="detail-row">
+            <span>Nro. de operación</span>
+            <span id="confirmOp">25422464</span>
+          </div>
+        </div>
+      </div>
+      <div class="promo-banner-bottom">
+        <img src="https://i.postimg.cc/FRNhhv8k/1755961471955.jpg" alt="iPhone 16e">
+      </div>
+    </div>
+
+    <!-- Pantalla: Perfil -->
+    <div id="profile" class="screen" style="display:none; padding:20px;">
+      <h2 style="color:var(--bcp-blue); margin:20px 0;">Editar Perfil</h2>
+      <img src="https://ui-avatars.com/api/?name=AnthZz+Berrocal&background=0068C7&color=fff" alt="Foto" class="profile-pic" id="profilePic" onclick="changePhoto()" style="width:80px; height:80px; border-radius:50%; margin:20px auto; display:block; border:3px solid var(--bcp-blue);">
+      <div style="margin:15px 0;">
+        <label style="display:block; margin-bottom:8px; color:#333;">Nombre completo</label>
+        <input type="text" id="editName" value="AnthZz Berrocal" style="width:100%; padding:12px; border-radius:8px; border:1px solid #e0e0e0; font-size:1em;">
+      </div>
+      <div style="margin:15px 0;">
+        <label style="display:block; margin-bottom:8px; color:#333;">Apodo</label>
+        <input type="text" id="editNickname" value="_BerMat_Mods" style="width:100%; padding:12px; border-radius:8px; border:1px solid #e0e0e0; font-size:1em;">
+      </div>
+      <div style="margin:15px 0;">
+        <label style="display:block; margin-bottom:8px; color:#333;">Email</label>
+        <input type="email" id="editEmail" value="anthzz@bermatmods.dev" style="width:100%; padding:12px; border-radius:8px; border:1px solid #e0e0e0; font-size:1em;">
+      </div>
+      <div style="margin:15px 0;">
+        <label style="display:block; margin-bottom:8px; color:#333;">Teléfono</label>
+        <input type="tel" id="editPhone" value="+51 999 888 777" style="width:100%; padding:12px; border-radius:8px; border:1px solid #e0e0e0; font-size:1em;">
+      </div>
+      <button class="big-button" onclick="saveProfile()">Guardar Cambios</button>
+      <button class="big-button secondary" style="margin-top:10px;" onclick="goBack()">← Volver</button>
+    </div>
+
+    <!-- Pantalla: Editar Saldo -->
+    <div id="editBalance" class="screen" style="display:none; padding:20px;">
+      <h2 style="color:var(--bcp-blue); margin:20px 0;">Editar Saldo</h2>
+      <div style="margin:15px 0;">
+        <label style="display:block; margin-bottom:8px; color:#333;">Saldo actual (S/)</label>
+        <input type="number" id="editBalanceInput" value="27.00" style="width:100%; padding:12px; border-radius:8px; border:1px solid #e0e0e0; font-size:1em;">
+      </div>
+      <button class="big-button" onclick="saveBalance()">Guardar Saldo</button>
+      <button class="big-button secondary" style="margin-top:10px;" onclick="goBack()">← Volver</button>
+    </div>
+
+    <!-- Pantalla: Información de la app -->
+    <div id="infoScreen" class="info-screen">
+      <h2>Yape BCP v2.5</h2>
+      <p>Desarrollado por</p>
+      <p class="dev-name">AnthZz Berrocal _BerMat_Mods</p>
+      <p>Versión más reciente lanzada por BerMatMods</p>
+      <hr style="border:1px solid #e0e0e0; margin:20px 0;">
+      <a href="https://github.com/BerMatMods" target="_blank" class="github-link">
+        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
+        Ver más en GitHub
+      </a>
+      <p class="footer-text">Somos legión no olvides, Esperanos</p>
+      <button class="big-button secondary" style="margin-top:20px; width:100%;" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
+
+    <!-- Escaneo QR -->
+    <div id="scanScreen" class="scan-screen">
+      <div class="scan-overlay"></div>
+      <div class="scan-frame">
+        <div class="scan-line"></div>
+      </div>
+      <div class="scan-close" onclick="closeScan()">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
+
+    <!-- Chispas -->
+    <div class="sparkles" id="sparkles"></div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <strong>by AnthZz Berrocal _BerMat_Mods</strong>
+    </div>
+
+  </div>
 
   <script>
-    // Variables
-    let profiles = JSON.parse(localStorage.getItem('neonx-profiles')) || [];
-    let logCounter = 0;
+    let balance = 27.00;
+    let balanceVisible = false;
+    let userName = "AnthZz";
+    let userProfile = {
+      name: "AnthZz Berrocal",
+      nickname: "_BerMat_Mods",
+      email: "anthzz@bermatmods.dev",
+      phone: "+51 999 888 777",
+      photo: "https://ui-avatars.com/api/?name=AnthZz+Berrocal&background=0068C7&color=fff"
+    };
 
-    // Generar partículas
-    function createParticles() {
-      const container = document.getElementById('particles');
-      for (let i = 0; i < 50; i++) {
-        const p = document.createElement('div');
-        p.classList.add('particle');
-        p.style.width = Math.random() * 10 + 'px';
-        p.style.height = p.style.width;
-        p.style.backgroundColor = ['#3b82f6', '#8b5cf6', '#06b6d4', '#10b981'][Math.floor(Math.random() * 4)];
-        p.style.left = Math.random() * 100 + 'vw';
-        p.style.top = Math.random() * 100 + 'vh';
-        p.style.animationDuration = Math.random() * 20 + 10 + 's';
-        p.style.animationDelay = Math.random() * 5 + 's';
-        container.appendChild(p);
+    let movements = JSON.parse(localStorage.getItem('yape_movements')) || [];
+
+    function toggleMenu() {
+      const sidebar = document.getElementById('menuSidebar');
+      const overlay = document.getElementById('menuOverlay');
+      sidebar.classList.toggle('active');
+      overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+    }
+
+    function toggleBalance() {
+      const elem = document.getElementById('balanceAmount');
+      const text = document.getElementById('balanceToggleText');
+      if (balanceVisible) {
+        elem.textContent = `S/ ${balance.toFixed(2)}`;
+        text.textContent = 'Mostrar saldo';
+        balanceVisible = false;
+      } else {
+        elem.textContent = '●●●●●●';
+        text.textContent = 'Ocultar saldo';
+        balanceVisible = true;
       }
     }
 
-    // Cargar preferencias
-    function loadPreferences() {
-      const darkMode = localStorage.getItem('darkMode') !== 'false';
-      const rgbEnabled = localStorage.getItem('rgbEnabled') !== 'false';
-      const font = localStorage.getItem('font') || 'Orbitron';
-      const animEnabled = localStorage.getItem('animEnabled') !== 'false';
-
-      document.body.classList.toggle('dark-mode', darkMode);
-      document.getElementById('theme-toggle').textContent = darkMode ? '🌙' : '☀️';
-      document.getElementById('dark-mode-toggle').checked = darkMode;
-      document.getElementById('rgb-toggle').checked = rgbEnabled;
-      document.getElementById('anim-toggle').checked = animEnabled;
-      document.getElementById('font-select').value = font;
-      document.body.style.setProperty('--font-main', `${font}, sans-serif`);
-      if (rgbEnabled) document.body.classList.add('rgb-glow');
-
-      loadProfiles();
-      createParticles();
+    function startScan() {
+      document.getElementById('scanScreen').style.display = 'flex';
+      setTimeout(() => {
+        closeScan();
+        const amount = (Math.random() * 60 + 10).toFixed(2);
+        showSparkles();
+        setTimeout(() => {
+          alert(`✅ Pago realizado\nMonto: S/ ${amount}`);
+          balance -= parseFloat(amount);
+          document.getElementById('balanceAmount').textContent = `S/ ${balance.toFixed(2)}`;
+          document.getElementById('menuBalance').textContent = balance.toFixed(2);
+          addMovement('Pago realizado', '*** *** 777', amount);
+        }, 500);
+      }, 2500);
     }
 
-    // Toggle theme
-    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-    function toggleTheme() {
-      const isDark = !document.body.classList.contains('dark-mode');
-      document.body.classList.toggle('dark-mode', isDark);
-      document.getElementById('theme-toggle').textContent = isDark ? '🌙' : '☀️';
-      document.getElementById('dark-mode-toggle').checked = isDark;
-      localStorage.setItem('darkMode', isDark);
+    function closeScan() {
+      document.getElementById('scanScreen').style.display = 'none';
     }
 
-    // Menú
-    document.getElementById('menu-toggle').addEventListener('click', () => {
-      document.getElementById('sidebar').classList.toggle('open');
-    });
-
-    // Navegación
-    document.querySelectorAll('.sidebar a').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = link.getAttribute('href').slice(1);
-        showSection(target);
-        document.getElementById('sidebar').classList.remove('open');
-      });
-    });
-
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-      document.querySelector(`.sidebar a[href="#${id}"]`).classList.add('active');
+    function showSendScreen() {
+      document.getElementById('sendPhone').value = '';
+      document.getElementById('sendName').value = 'AnthZz Berrocal';
+      document.getElementById('amountInput').value = '';
+      document.getElementById('sendAmount').textContent = '0.00';
+      showScreen('sendScreen');
     }
 
-    // Efectos RGB
-    document.getElementById('rgb-toggle').addEventListener('change', function () {
-      document.body.classList.toggle('rgb-glow', this.checked);
-      localStorage.setItem('rgbEnabled', this.checked);
-    });
+    function updateAmount(value) {
+      document.getElementById('sendAmount').textContent = value || '0.00';
+    }
 
-    // Fuente
-    document.getElementById('font-select').addEventListener('change', function () {
-      document.body.style.setProperty('--font-main', `${this.value}, sans-serif`);
-      localStorage.setItem('font', this.value);
-    });
+    function confirmSend() {
+      const phone = document.getElementById('sendPhone').value;
+      const name = document.getElementById('sendName').value;
+      const amount = document.getElementById('sendAmount').textContent;
+      if (!phone || phone.length < 9) {
+        alert("Número inválido");
+        return;
+      }
+      if (!amount || amount === '0.00') {
+        alert("Ingresa un monto válido");
+        return;
+      }
+      showConfirm(phone, name, amount);
+    }
 
-    // Animaciones
-    document.getElementById('anim-toggle').addEventListener('change', function () {
-      document.body.style.setProperty('--transition', this.checked ? 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)' : 'none');
-      localStorage.setItem('animEnabled', this.checked);
-    });
+    function showConfirm(phone, name, amount) {
+      showScreen('confirmContainer');
+      document.getElementById('confirmAmount').textContent = amount;
+      document.getElementById('confirmName').textContent = name;
+      const now = new Date();
+      const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+      const month = months[now.getMonth()];
+      const day = now.getDate();
+      const year = now.getFullYear();
+      const hour = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const ampm = hour >= 12 ? 'p.m.' : 'a.m.';
+      const hour12 = hour % 12 || 12;
+      document.getElementById('confirmDate').textContent = `${day} ${month}. ${year}`;
+      document.getElementById('confirmTime').textContent = `${hour12}:${minutes} ${ampm}`;
+      document.getElementById('code1').textContent = Math.floor(Math.random() * 10);
+      document.getElementById('code2').textContent = Math.floor(Math.random() * 10);
+      document.getElementById('code3').textContent = Math.floor(Math.random() * 10);
+      document.getElementById('confirmPhone').textContent = `*** *** ${phone.slice(-3)}`;
+      document.getElementById('confirmOp').textContent = Math.floor(Math.random() * 90000000 + 10000000);
+      showSparkles();
+      addMovement(name, phone, amount);
+    }
 
-    // SOCKS auth
-    document.getElementById('socks-auth').addEventListener('change', function () {
-      document.getElementById('socks-auth-fields').style.display = this.checked ? 'block' : 'none';
-    });
+    function addMovement(name, phone, amount) {
+      const now = new Date();
+      const date = now.toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
+      const time = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', hour12: true });
+      const operation = Math.floor(Math.random() * 90000000 + 10000000);
 
-    // Guardar configs
-    function saveHttpConfig() {
-      const config = {
-        type: 'HTTP', host: i('http-host'), port: i('http-port'),
-        method: i('http-method'), header: i('http-header'), date: timestamp()
+      const movement = {
+        name: name,
+        phone: `*** *** ${phone.slice(-3)}`,
+        amount: amount,
+        date: `${date} ${time}`,
+        operation: operation
       };
-      profiles.push(config);
-      saveProfiles();
-      alert('✅ Config HTTP guardada');
+
+      movements.unshift(movement);
+      localStorage.setItem('yape_movements', JSON.stringify(movements));
+      renderMovements();
     }
 
-    function saveSocksConfig() {
-      const auth = document.getElementById('socks-auth').checked;
-      const config = {
-        type: 'SOCKS5', ip: i('socks-ip'), port: i('socks-port'), auth,
-        user: auth ? i('socks-user') : '', pass: auth ? i('socks-pass') : '',
-        date: timestamp()
-      };
-      profiles.push(config);
-      saveProfiles();
-      alert('✅ SOCKS guardado');
-    }
+    function renderMovements() {
+      const container = document.getElementById('movementsList');
+      container.innerHTML = '';
 
-    function savePacConfig() {
-      const config = {
-        type: 'PAC/DNS', dns: i('custom-dns'), pac: i('pac-url'),
-        exclude: i('pac-exclude'), date: timestamp()
-      };
-      profiles.push(config);
-      saveProfiles();
-      alert('✅ PAC/DNS guardado');
-    }
+      if (movements.length === 0) {
+        container.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">No tienes movimientos aún</div>';
+        return;
+      }
 
-    function i(id) { return document.getElementById(id).value; }
-    function timestamp() { return new Date().toLocaleString(); }
-
-    // Perfiles
-    function saveProfiles() {
-      localStorage.setItem('neonx-profiles', JSON.stringify(profiles));
-      loadProfiles();
-    }
-
-    function loadProfiles() {
-      const list = document.getElementById('profile-list');
-      list.innerHTML = '';
-      profiles.slice(-10).reverse().forEach((p, i) => {
+      movements.forEach(mov => {
         const item = document.createElement('div');
-        item.className = 'profile-item';
+        item.className = 'movement-item';
         item.innerHTML = `
-          <div>
-            <strong>${p.type}</strong> | ${p.date}
-            <div style="font-size:0.8rem; opacity:0.7;">${shortConfig(p)}</div>
+          <div class="movement-icon">
+            <i class="fas fa-paper-plane"></i>
           </div>
-          <button class="btn btn-danger" onclick="deleteProfile(${profiles.length - 1 - i})">🗑️</button>
+          <div class="movement-info">
+            <div class="movement-name">${mov.name}</div>
+            <div class="movement-date">${mov.date}</div>
+          </div>
+          <div class="movement-amount">S/ ${mov.amount}</div>
         `;
-        list.appendChild(item);
+        container.appendChild(item);
       });
     }
 
-    function shortConfig(p) {
-      if (p.type === 'HTTP') return `${p.host}:${p.port} | ${p.method}`;
-      if (p.type === 'SOCKS5') return `${p.ip}:${p.port}`;
-      return p.dns || 'PAC';
+    function goBack() {
+      showScreen('home');
     }
 
-    function deleteProfile(index) {
-      profiles.splice(index, 1);
-      saveProfiles();
-    }
-
-    // Logs
-    function simulateLog() {
-      const logs = document.getElementById('logs-output');
-      const entries = [
-        `[${timestamp()}] Conexión iniciada...`,
-        `[${timestamp()}] Resolviendo DNS... OK`,
-        `[${timestamp()}] Conectado al proxy: ${Math.random().toFixed(3) * 100}ms`,
-        `[${timestamp()}] Tráfico encriptado activado`,
-        `[${timestamp()}] Navegación segura`
-      ];
-      logs.value += entries.join('\n') + '\n';
-      logs.scrollTop = logs.scrollHeight;
-    }
-
-    function clearLogs() {
-      document.getElementById('logs-output').value = '';
-    }
-
-    // Importar/Exportar
-    function exportProfiles() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(profiles, null, 2));
-      const a = document.createElement('a');
-      a.href = dataStr;
-      a.download = "neonx_profiles.json";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-
-    function importProfiles() {
-      const file = document.getElementById('import-file').files[0];
-      if (!file) return;
-      const r = new FileReader();
-      r.onload = e => {
-        try {
-          const imported = JSON.parse(e.target.result);
-          profiles = profiles.concat(imported);
-          saveProfiles();
-          alert('✅ Perfiles importados');
-        } catch (err) {
-          alert('❌ Error al importar');
-        }
-      };
-      r.readAsText(file);
-    }
-
-    // Reset
-    function resetApp() {
-      if (confirm('¿Restablecer toda la app?')) {
-        localStorage.clear();
-        profiles = [];
-        location.reload();
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+      if (id === 'movementsList') {
+        renderMovements();
       }
     }
 
-    // Inicializar
-    loadPreferences();
-    showSection('home');
+    function changePhoto() {
+      const url = prompt('Ingresa URL de foto (o deja vacío para avatar)', '');
+      if (url && url.trim() !== '') {
+        userProfile.photo = url.trim();
+      } else {
+        const name = document.getElementById('editName').value || 'AnthZz Berrocal';
+        userProfile.photo = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0068C7&color=fff`;
+      }
+      document.getElementById('profilePic').src = userProfile.photo;
+      document.getElementById('menuProfilePic').src = userProfile.photo;
+    }
+
+    function saveProfile() {
+      const name = document.getElementById('editName').value;
+      const nickname = document.getElementById('editNickname').value;
+      const email = document.getElementById('editEmail').value;
+      const phone = document.getElementById('editPhone').value;
+      if (!name || !email || !phone) {
+        alert('Completa todos los campos');
+        return;
+      }
+      userProfile.name = name;
+      userProfile.nickname = nickname;
+      userProfile.email = email;
+      userProfile.phone = phone;
+      userName = name.split(' ')[0];
+      document.getElementById('greeting').textContent = `Hola, ${userName}`;
+      document.getElementById('menuName').textContent = name;
+      alert('✅ Perfil actualizado');
+      goBack();
+    }
+
+    function saveBalance() {
+      const newBalance = parseFloat(document.getElementById('editBalanceInput').value);
+      if (isNaN(newBalance) || newBalance < 0) {
+        alert('Ingresa un saldo válido');
+        return;
+      }
+      balance = newBalance;
+      document.getElementById('balanceAmount').textContent = `S/ ${balance.toFixed(2)}`;
+      document.getElementById('menuBalance').textContent = balance.toFixed(2);
+      alert('✅ Saldo actualizado');
+      goBack();
+    }
+
+    function showSparkles() {
+      const container = document.getElementById('sparkles');
+      container.style.display = 'block';
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const spark = document.createElement('div');
+          spark.classList.add('spark');
+          spark.style.left = Math.random() * 100 + 'vw';
+          spark.style.opacity = Math.random();
+          spark.style.width = spark.style.height = (Math.random() * 10 + 5) + 'px';
+          spark.style.animationDuration = (Math.random() * 2 + 1) + 's';
+          container.appendChild(spark);
+          setTimeout(() => spark.remove(), 3000);
+        }, i * 50);
+      }
+      setTimeout(() => container.style.display = 'none', 3000);
+    }
+
+    window.addEventListener('load', () => {
+      showScreen('home');
+      renderMovements();
+    });
   </script>
 </body>
 </html>
