@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Editor de Yape - ¡Yapeaste! | By AnthZz Berrocal</title>
+  <title>Recibo de Yape Realista</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -31,17 +31,20 @@
       max-width: 400px;
       position: relative;
       overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
 
     .header {
-      text-align: left;
-      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 16px 0 16px;
     }
 
     .logo {
       width: 80px;
       height: 80px;
-      display: inline-block;
     }
 
     .logo img {
@@ -49,21 +52,17 @@
       height: auto;
     }
 
-    .close-btn {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+    .menu-btn {
+      width: 40px;
+      height: 40px;
       background: rgba(255, 255, 255, 0.1);
-      color: white;
-      font-size: 28px;
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      border: none;
+      font-size: 24px;
+      color: white;
     }
 
     .card {
@@ -78,11 +77,13 @@
       font-size: 22px;
       font-weight: 700;
       margin-bottom: 12px;
+      color: #69009A;
     }
 
     .amount {
       font-size: 48px;
       font-weight: 700;
+      color: #D32F2F;
       margin-bottom: 12px;
     }
 
@@ -179,7 +180,6 @@
 
     .swiper-slide {
       text-align: center;
-      font-size: 18px;
       background: #F5F5F5;
       border-radius: 12px;
       overflow: hidden;
@@ -191,74 +191,35 @@
       object-fit: cover;
     }
 
-    .controls {
-      margin-top: 20px;
+    /* Menú desplegable */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .menu {
+      background: #F5F5F5;
+      width: 90%;
+      max-width: 350px;
+      border-radius: 16px;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .input-group {
-      margin-bottom: 12px;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      color: #fff;
-    }
-
-    .input-group input, .input-group select, .input-group textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      background: white;
-      color: #000;
-    }
-
-    button.export {
-      width: 100%;
-      padding: 12px;
-      background: #00C89A;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 16px;
-    }
-
-    .footer {
+    .menu-header {
       text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: #ddd;
-      opacity: 0.8;
-    }
-
-    /* AJUSTES */
-    .settings {
-      margin-top: 20px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
-    }
-
-    .settings h3 {
+      margin-bottom: 20px;
+      color: #69009A;
+      font-weight: 700;
       font-size: 18px;
-      margin-bottom: 16px;
-      color: #fff;
-    }
-
-    .app-info {
-      text-align: center;
-      margin-bottom: 16px;
     }
 
     .app-logo {
@@ -266,8 +227,8 @@
       height: 60px;
       border-radius: 50%;
       overflow: hidden;
-      margin: 0 auto;
-      box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700, inset 0 0 10px rgba(255, 215, 0, 0.5);
+      margin: 0 auto 10px;
+      box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700;
       border: 2px solid #FFD700;
     }
 
@@ -277,32 +238,49 @@
       object-fit: cover;
     }
 
-    .app-name {
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: 8px;
-      color: #fff;
+    .menu-list {
+      list-style: none;
     }
 
-    .app-version {
+    .menu-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 15px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .menu-list li:last-child {
+      border-bottom: none;
+    }
+
+    .close-menu {
+      text-align: center;
+      margin-top: 16px;
+      color: #00C89A;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
       font-size: 12px;
       color: #ddd;
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- CABECERA -->
+  <!-- RECIBO REALISTA -->
+  <div class="container" id="captureArea">
     <div class="header">
       <div class="logo">
-        <img src="https://i.imgur.com/qWkOuKq.png" alt="Yape Logo">
+        <img src="https://share.google/images/nivz3x5SlndAkGe3o" alt="Yape Logo">
       </div>
+      <div class="menu-btn" onclick="openMenu()">☰</div>
     </div>
 
-    <!-- BOTÓN DE CERRAR -->
-    <button class="close-btn">×</button>
-
-    <!-- TARJETA DE TRANSACCIÓN -->
     <div class="card">
       <div class="title" id="operationTitle">¡Yapeaste!</div>
       <div class="amount" id="amountColor">S/ <span id="displayAmount">2</span></div>
@@ -340,7 +318,6 @@
       </div>
     </div>
 
-    <!-- BOTÓN NUEVO YAPEO -->
     <button class="button">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -350,7 +327,6 @@
       NUEVO YAPEO
     </button>
 
-    <!-- SWIPER DE ANUNCIOS -->
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
@@ -365,108 +341,46 @@
       </div>
     </div>
 
-    <!-- CONTROLES DE EDICIÓN -->
-    <div class="controls">
-      <div class="input-group">
-        <label>Tipo de operación</label>
-        <select id="operationType" onchange="updateOperation()">
-          <option value="sent">Envío - ¡Yapeaste!</option>
-          <option value="received">Recepción - ¡Te yapearon!</option>
-          <option value="payment">Pago realizado</option>
-          <option value="topup">Recarga</option>
-          <option value="purchase">Compra</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label>Monto (S/)</label>
-        <input type="text" id="amountInput" value="2" oninput="updateAmount()">
-      </div>
-
-      <div class="input-group">
-        <label>Nombre completo</label>
-        <input type="text" id="nameInput" value="Julia Maucaylle H." oninput="updateName()">
-      </div>
-
-      <div class="input-group">
-        <label>Número de celular</label>
-        <input type="text" id="cellInput" value="*** *** 832" oninput="updateCell()">
-      </div>
-
-      <div class="input-group">
-        <label>Nro. de operación</label>
-        <input type="text" id="opInput" value="18081038" oninput="updateOp()">
-      </div>
-
-      <div class="input-group">
-        <label>Código de seguridad</label>
-        <input type="text" id="codeInput" value="038" oninput="updateCode()">
-      </div>
-
-      <div class="input-group">
-        <label>Mensaje (opcional)</label>
-        <textarea id="messageInput" oninput="updateMessage()">Gracias por el trabajo 😊</textarea>
-      </div>
-
-      <button class="export" onclick="downloadImage()">📥 Descargar Imagen</button>
-    </div>
-
-    <!-- AJUSTES -->
-    <div class="settings">
-      <h3>⚙️ Ajustes</h3>
-      <div class="app-info">
-        <div class="app-logo">
-          <img src="https://i.postimg.cc/sgkfBDPn/IMG-20250826-WA0338.jpg" alt="Logo App">
-        </div>
-        <div class="app-name">Editor de Yape</div>
-        <div class="app-version">Versión 1.0.0</div>
-      </div>
-      <ul class="settings-list">
-        <li>Editar Recibo</li>
-        <li>Configuración de Notificaciones</li>
-        <li>Acerca de la App</li>
-        <li>Contacto</li>
-        <li>Privacidad</li>
-        <li>Terminos y Condiciones</li>
-      </ul>
-    </div>
-
-    <!-- FOOTER -->
     <div class="footer">
       By AnthZz Berrocal | BerMatMods
     </div>
   </div>
 
+  <!-- MENÚ DE AJUSTES (3 RAYAS) -->
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu">
+      <div class="menu-header">Configuración del Editor</div>
+      <div class="app-logo">
+        <img src="https://i.postimg.cc/sgkfBDPn/IMG-20250826-WA0338.jpg" alt="Logo App">
+      </div>
+      <ul class="menu-list">
+        <li onclick="changeType('sent')">Cambiar a: ¡Yapeaste!</li>
+        <li onclick="changeType('received')">Cambiar a: ¡Te yapearon!</li>
+        <li onclick="changeType('payment')">Pago realizado</li>
+        <li onclick="changeType('topup')">Recarga exitosa</li>
+        <li onclick="promptEdit('amount')">Editar monto</li>
+        <li onclick="promptEdit('name')">Editar nombre</li>
+        <li onclick="promptEdit('cell')">Editar número</li>
+        <li onclick="promptEdit('op')">Editar operación</li>
+        <li onclick="promptEdit('message')">Editar mensaje</li>
+        <li onclick="downloadImage()">📥 Descargar como imagen</li>
+      </ul>
+      <div class="close-menu" onclick="closeMenu()">Cerrar menú</div>
+    </div>
+  </div>
+
   <script>
-    function updateAmount() {
-      document.getElementById('displayAmount').innerText = document.getElementById('amountInput').value;
+    // Abrir y cerrar menú
+    function openMenu() {
+      document.getElementById('menuOverlay').style.display = 'flex';
     }
 
-    function updateName() {
-      document.getElementById('displayName').innerText = document.getElementById('nameInput').value;
+    function closeMenu() {
+      document.getElementById('menuOverlay').style.display = 'none';
     }
 
-    function updateCell() {
-      document.getElementById('cellNumber').innerText = document.getElementById('cellInput').value;
-    }
-
-    function updateOp() {
-      document.getElementById('operationId').innerText = document.getElementById('opInput').value;
-    }
-
-    function updateCode() {
-      const code = document.getElementById('codeInput').value;
-      document.getElementById('digit1').innerText = code[0] || '0';
-      document.getElementById('digit2').innerText = code[1] || '0';
-      document.getElementById('digit3').innerText = code[2] || '0';
-    }
-
-    function updateMessage() {
-      document.getElementById('messageText').innerText = document.getElementById('messageInput').value;
-    }
-
-    function updateOperation() {
-      const type = document.getElementById('operationType').value;
+    // Cambiar tipo de operación
+    function changeType(type) {
       const title = document.getElementById('operationTitle');
       const amount = document.getElementById('amountColor');
 
@@ -491,18 +405,42 @@
           title.style.color = '#00C89A';
           amount.style.color = '#00C89A';
           break;
-        case 'purchase':
-          title.innerText = 'Compra realizada';
-          title.style.color = '#69009A';
-          amount.style.color = '#D32F2F';
+      }
+      closeMenu();
+    }
+
+    // Editar campos
+    function promptEdit(field) {
+      let value;
+      switch(field) {
+        case 'amount':
+          value = prompt('Ingresa el monto:', document.getElementById('displayAmount').innerText);
+          if (value) document.getElementById('displayAmount').innerText = value;
+          break;
+        case 'name':
+          value = prompt('Nombre del contacto:', document.getElementById('displayName').innerText);
+          if (value) document.getElementById('displayName').innerText = value;
+          break;
+        case 'cell':
+          value = prompt('Número de celular:', document.getElementById('cellNumber').innerText);
+          if (value) document.getElementById('cellNumber').innerText = value;
+          break;
+        case 'op':
+          value = prompt('Número de operación:', document.getElementById('operationId').innerText);
+          if (value) document.getElementById('operationId').innerText = value;
+          break;
+        case 'message':
+          value = prompt('Mensaje:', document.getElementById('messageText').innerText);
+          if (value) document.getElementById('messageText').innerText = value;
           break;
       }
     }
 
+    // Actualizar fecha y hora (Perú)
     function updateDateTime() {
       const now = new Date();
       const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      const date = now.toLocaleDateString('es-PE', options);
+      const date = now.toLocaleDateString('es-PE', options).replace('ene', 'ene').replace('feb', 'feb').replace('mar', 'mar').replace('abr', 'abr').replace('may', 'may').replace('jun', 'jun').replace('jul', 'jul').replace('ago', 'ago').replace('sep', 'sep').replace('oct', 'oct').replace('nov', 'nov').replace('dic', 'dic');
       document.getElementById('dateText').innerText = `📅 ${date}`;
 
       const hour = now.getHours();
@@ -513,18 +451,20 @@
       document.getElementById('timeText').innerText = `⏰ ${formattedHour}:${formattedMinute} ${ampm}`;
     }
 
+    // Descargar como imagen
     function downloadImage() {
-      const capture = document.querySelector('.container');
+      const capture = document.getElementById('captureArea');
       html2canvas(capture, {
         backgroundColor: '#69009A',
         scale: 2,
         useCORS: true
       }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'yape-recibo.png';
+        link.download = 'recibo-yape.png';
         link.href = canvas.toDataURL();
         link.click();
       });
+      closeMenu();
     }
 
     // Inicializar Swiper
@@ -542,13 +482,6 @@
 
     // Inicializar
     window.onload = () => {
-      updateAmount();
-      updateName();
-      updateCell();
-      updateOp();
-      updateCode();
-      updateMessage();
-      updateOperation();
       updateDateTime();
     };
 
