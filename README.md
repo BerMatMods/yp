@@ -77,14 +77,12 @@
     .title {
       font-size: 22px;
       font-weight: 700;
-      color: #69009A;
       margin-bottom: 12px;
     }
 
     .amount {
       font-size: 48px;
       font-weight: 700;
-      color: #222;
       margin-bottom: 12px;
     }
 
@@ -212,7 +210,7 @@
       color: #fff;
     }
 
-    .input-group input {
+    .input-group input, .input-group select, .input-group textarea {
       width: 100%;
       padding: 8px;
       border: 1px solid #ccc;
@@ -233,10 +231,6 @@
       font-weight: 500;
       cursor: pointer;
       margin-top: 16px;
-    }
-
-    button.export:hover {
-      background: #00B388;
     }
 
     .footer {
@@ -294,26 +288,6 @@
       font-size: 12px;
       color: #ddd;
     }
-
-    .settings-list {
-      list-style: none;
-    }
-
-    .settings-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 14px;
-      color: #ddd;
-      cursor: pointer;
-    }
-
-    .settings-list li:hover {
-      color: #fff;
-    }
-
-    .settings-list li:last-child {
-      border-bottom: none;
-    }
   </style>
 </head>
 <body>
@@ -330,11 +304,11 @@
 
     <!-- TARJETA DE TRANSACCIÓN -->
     <div class="card">
-      <div class="title">¡Yapeaste!</div>
-      <div class="amount">S/ <span id="displayAmount">2</span></div>
+      <div class="title" id="operationTitle">¡Yapeaste!</div>
+      <div class="amount" id="amountColor">S/ <span id="displayAmount">2</span></div>
       <div class="name" id="displayName">Julia Maucaylle H.</div>
       <div class="date-time">
-        <span>📅 23 ago. 2025</span> | <span>⏰ 06:59 p.m.</span>
+        <span id="dateText">📅 23 ago. 2025</span> | <span id="timeText">⏰ 6:59 p.m.</span>
       </div>
 
       <div class="security-code">
@@ -359,6 +333,10 @@
       <div class="data-row">
         <strong>Nro. de operación</strong>
         <span id="operationId">18081038</span>
+      </div>
+      <div class="data-row">
+        <strong>Mensaje</strong>
+        <span id="messageText">Gracias por el trabajo 😊</span>
       </div>
     </div>
 
@@ -390,33 +368,46 @@
     <!-- CONTROLES DE EDICIÓN -->
     <div class="controls">
       <div class="input-group">
+        <label>Tipo de operación</label>
+        <select id="operationType" onchange="updateOperation()">
+          <option value="sent">Envío - ¡Yapeaste!</option>
+          <option value="received">Recepción - ¡Te yapearon!</option>
+          <option value="payment">Pago realizado</option>
+          <option value="topup">Recarga</option>
+          <option value="purchase">Compra</option>
+        </select>
+      </div>
+
+      <div class="input-group">
         <label>Monto (S/)</label>
         <input type="text" id="amountInput" value="2" oninput="updateAmount()">
       </div>
+
       <div class="input-group">
         <label>Nombre completo</label>
         <input type="text" id="nameInput" value="Julia Maucaylle H." oninput="updateName()">
       </div>
-      <div class="input-group">
-        <label>Fecha</label>
-        <input type="text" id="dateInput" value="23 ago. 2025" oninput="updateDate()">
-      </div>
-      <div class="input-group">
-        <label>Hora</label>
-        <input type="text" id="timeInput" value="06:59 p.m." oninput="updateTime()">
-      </div>
-      <div class="input-group">
-        <label>Código de seguridad</label>
-        <input type="text" id="codeInput" value="038" oninput="updateCode()">
-      </div>
+
       <div class="input-group">
         <label>Número de celular</label>
         <input type="text" id="cellInput" value="*** *** 832" oninput="updateCell()">
       </div>
+
       <div class="input-group">
         <label>Nro. de operación</label>
         <input type="text" id="opInput" value="18081038" oninput="updateOp()">
       </div>
+
+      <div class="input-group">
+        <label>Código de seguridad</label>
+        <input type="text" id="codeInput" value="038" oninput="updateCode()">
+      </div>
+
+      <div class="input-group">
+        <label>Mensaje (opcional)</label>
+        <textarea id="messageInput" oninput="updateMessage()">Gracias por el trabajo 😊</textarea>
+      </div>
+
       <button class="export" onclick="downloadImage()">📥 Descargar Imagen</button>
     </div>
 
@@ -455,12 +446,12 @@
       document.getElementById('displayName').innerText = document.getElementById('nameInput').value;
     }
 
-    function updateDate() {
-      document.querySelector('.date-time span:nth-child(1)').innerText = `📅 ${document.getElementById('dateInput').value}`;
+    function updateCell() {
+      document.getElementById('cellNumber').innerText = document.getElementById('cellInput').value;
     }
 
-    function updateTime() {
-      document.querySelector('.date-time span:nth-child(3)').innerText = `⏰ ${document.getElementById('timeInput').value}`;
+    function updateOp() {
+      document.getElementById('operationId').innerText = document.getElementById('opInput').value;
     }
 
     function updateCode() {
@@ -470,12 +461,56 @@
       document.getElementById('digit3').innerText = code[2] || '0';
     }
 
-    function updateCell() {
-      document.getElementById('cellNumber').innerText = document.getElementById('cellInput').value;
+    function updateMessage() {
+      document.getElementById('messageText').innerText = document.getElementById('messageInput').value;
     }
 
-    function updateOp() {
-      document.getElementById('operationId').innerText = document.getElementById('opInput').value;
+    function updateOperation() {
+      const type = document.getElementById('operationType').value;
+      const title = document.getElementById('operationTitle');
+      const amount = document.getElementById('amountColor');
+
+      switch(type) {
+        case 'sent':
+          title.innerText = '¡Yapeaste!';
+          title.style.color = '#69009A';
+          amount.style.color = '#D32F2F';
+          break;
+        case 'received':
+          title.innerText = '¡Te yapearon!';
+          title.style.color = '#00C89A';
+          amount.style.color = '#00C89A';
+          break;
+        case 'payment':
+          title.innerText = 'Pago realizado';
+          title.style.color = '#69009A';
+          amount.style.color = '#D32F2F';
+          break;
+        case 'topup':
+          title.innerText = 'Recarga exitosa';
+          title.style.color = '#00C89A';
+          amount.style.color = '#00C89A';
+          break;
+        case 'purchase':
+          title.innerText = 'Compra realizada';
+          title.style.color = '#69009A';
+          amount.style.color = '#D32F2F';
+          break;
+      }
+    }
+
+    function updateDateTime() {
+      const now = new Date();
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      const date = now.toLocaleDateString('es-PE', options);
+      document.getElementById('dateText').innerText = `📅 ${date}`;
+
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      const ampm = hour >= 12 ? 'p.m.' : 'a.m.';
+      const formattedHour = hour % 12 || 12;
+      const formattedMinute = minute.toString().padStart(2, '0');
+      document.getElementById('timeText').innerText = `⏰ ${formattedHour}:${formattedMinute} ${ampm}`;
     }
 
     function downloadImage() {
@@ -499,10 +534,6 @@
         delay: 3000,
         disableOnInteraction: false,
       },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
@@ -513,12 +544,16 @@
     window.onload = () => {
       updateAmount();
       updateName();
-      updateDate();
-      updateTime();
-      updateCode();
       updateCell();
       updateOp();
+      updateCode();
+      updateMessage();
+      updateOperation();
+      updateDateTime();
     };
+
+    // Actualizar cada minuto
+    setInterval(updateDateTime, 60000);
   </script>
 </body>
 </html>
