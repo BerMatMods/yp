@@ -1,628 +1,551 @@
-<!DOCTYPE html>
-<html lang="es" id="html">
+
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BerMatMods - Editor de Recibos</title>
-  <link rel="manifest" href='data:application/json,{}' id="manifest">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Para Briyidth 💖</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a2b5d5e9b5.js" crossorigin="anonymous"></script>
+
   <style>
-    :root {
-      --bg: #69009A;
-      --title-color: #69009A;
-      --card-bg: #F5F5F5;
-      --text-dark: #222;
-      --text-gray: #666;
-      --border-light: #eee;
-    }
-
-    .dark-mode {
-      --bg: #121212;
-      --card-bg: #1e1e1e;
-      --text-dark: #e0e0e0;
-      --text-gray: #aaa;
-      --border-light: #333;
-    }
-
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: var(--bg);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+    /* ====== RESET Y ESTILOS BASE ====== */
+    * {
       margin: 0;
-      transition: background 0.3s;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .container {
-      width: 100%;
-      max-width: 380px;
-      position: relative;
+    :root {
+      --bg: #000;
+      --neon-pink: #ff2bd6;
+      --neon-purple: #a84dff;
+      --neon-cyan: #27e0ff;
+      --menu-bg: linear-gradient(135deg, #1e0030, #3a1a5a, #2a0040);
+      --text-light: #fff;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
       overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      color: var(--text-light);
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 16px 0 16px;
-    }
-
-    .logo {
-      width: 70px;
-      height: 70px;
-    }
-
-    .logo img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-
-    .menu-btn {
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.1);
+    /* ====== BOTÓN DEL MENÚ (3 RAYAS BLANCAS Y GRANDES) ====== */
+    .menu-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.5);
       border-radius: 50%;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      z-index: 1000;
       cursor: pointer;
-      font-size: 24px;
-      color: white;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.2),
+        0 0 30px rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 20px 16px;
-      margin: 16px auto;
-      width: 94%;
-      max-width: 350px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    .menu-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 
+        0 0 25px rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(255, 255, 255, 0.2);
     }
 
-    .title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: var(--title-color);
+    /* Líneas blancas, gruesas y bien espaciadas */
+    .menu-line {
+      width: 28px;
+      height: 3.5px;
+      background: #ffffff;
+      border-radius: 2px;
+      margin: 4px 0;
+      transition: background 0.3s;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
     }
 
-    .amount {
-      font-size: 42px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 10px;
+    .menu-toggle:hover .menu-line {
+      background: #ffffff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 1);
     }
 
-    .name {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 8px;
-    }
-
-    .date-time {
-      font-size: 14px;
-      color: var(--text-gray);
-      margin-bottom: 16px;
-    }
-
-    .security-code-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      font-size: 14px;
-      color: var(--text-gray);
-    }
-
-    .security-code-label {
-      font-weight: 500;
-    }
-
-    .security-code-digits {
-      display: flex;
-      gap: 6px;
-    }
-
-    .digit {
-      width: 30px;
-      height: 30px;
-      background: #EAEAEA;
-      border-radius: 6px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 16px;
-      font-weight: 500;
-      color: #000;
-    }
-
-    .transaction-data {
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--text-gray);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-weight: 500;
-    }
-
-    .data-row {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-      font-size: 15px;
-    }
-
-    .data-row strong {
-      color: var(--text-dark);
-      font-weight: 700;
-    }
-
-    .data-row span {
-      color: var(--text-dark);
-      font-weight: 400;
-    }
-
-    .swiper-container {
-      width: 94%;
-      max-width: 350px;
-      height: 180px;
-      margin: 16px auto;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .swiper-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Menú */
-    .menu-overlay {
+    /* ====== PANEL DEL MENÚ ====== */
+    .menu-panel {
       position: fixed;
       top: 0;
-      left: 0;
-      width: 100%;
+      left: -320px;
+      width: 300px;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      display: none;
-      justify-content: center;
+      background: var(--menu-bg);
+      backdrop-filter: blur(12px);
+      border-right: 2px solid var(--neon-purple);
+      padding: 80px 20px 40px;
+      z-index: 999;
+      transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      overflow-y: auto;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
-    .menu {
-      background: var(--card-bg);
-      width: 90%;
-      max-width: 380px;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      max-height: 90vh;
-      overflow-y: auto;
+    .menu-panel.open {
+      left: 0;
     }
 
-    .menu-header {
+    /* Título del menú */
+    .menu-panel h3 {
+      color: #ff8ed4;
+      font-size: 18px;
+      margin-bottom: 25px;
       text-align: center;
-      margin-bottom: 20px;
-      color: var(--title-color);
-      font-weight: 700;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 10px rgba(255, 43, 214, 0.4);
+    }
+
+    /* Botón de WhatsApp */
+    .menu-panel a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #d0a0ff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      margin: 15px 0;
+      padding: 14px 20px;
+      border-radius: 14px;
+      background: rgba(168, 77, 255, 0.15);
+      width: 90%;
+      max-width: 260px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(168, 77, 255, 0.3);
+      box-shadow: 0 0 15px rgba(168, 77, 255, 0.1);
+    }
+
+    .menu-panel a:hover {
+      background: rgba(168, 77, 255, 0.25);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(168, 77, 255, 0.3);
+      color: var(--neon-pink);
+    }
+
+    .menu-panel a i {
+      color: #25D366;
       font-size: 18px;
     }
 
-    .app-logo {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin: 0 auto 10px;
-      box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700;
-      border: 2px solid #FFD700;
-    }
-
-    .app-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .menu-category {
-      margin: 20px 0 10px;
-      color: var(--title-color);
-      font-weight: 500;
-      font-size: 16px;
-    }
-
-    .menu-list {
-      list-style: none;
-    }
-
-    .menu-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border-light);
-      font-size: 15px;
-      color: var(--text-dark);
-      cursor: pointer;
-    }
-
-    .menu-list li:last-child {
-      border-bottom: none;
-    }
-
-    .switch-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 24px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
+    /* Botón de cerrar */
+    .close-btn {
       position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: #fff;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 24px;
+      opacity: 0.9;
+      transition: all 0.3s;
     }
 
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
+    .close-btn:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+      color: #ff2bd6;
+      text-shadow: 0 0 10px rgba(255, 43, 214, 0.8);
     }
 
-    input:checked + .slider {
-      background-color: #00C89A;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-
-    .footer {
+    /* ====== TEXTO DENTRO DEL CORAZÓN ====== */
+    .heart-inside-text {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(16px, 3.5vw, 28px);
+      color: #ff8ed4;
+      text-shadow: 
+        0 0 10px rgba(255, 43, 214, 0.8),
+        0 0 20px rgba(168, 77, 255, 0.5);
+      pointer-events: none;
+      z-index: 10;
       text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: #ddd;
-      opacity: 0.8;
+      max-width: 80%;
+      white-space: normal;
+      line-height: 1.4;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* ====== FIRMA ABAJO ====== */
+    .footer {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: #a84dff;
+      z-index: 10;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #a0ffa0;
+      text-decoration: none;
+    }
+
+    .footer a i {
+      color: #25D366;
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="captureArea">
-    <div class="header">
-      <div class="logo">
-        <img id="appLogo" src="https://i.postimg.cc/9MZK0cXj/Icono-de-la-aplicaci-n-Yape-removebg-preview-1.png" alt="App Logo">
-      </div>
-      <div class="menu-btn" onclick="openMenu()">☰</div>
-    </div>
 
-    <div class="card">
-      <div class="title" id="operationTitle">¡Yapeaste!</div>
-      <div class="amount">S/ <span id="displayAmount">2</span></div>
-      <div class="name" id="displayName">Julia Maucaylle H.</div>
-      <div class="date-time">
-        <span id="dateText">📅 23 ago. 2025</span> | <span id="timeText">⏰ 6:59 p.m.</span>
-      </div>
+  <canvas id="c"></canvas>
 
-      <div class="security-code-row">
-        <span class="security-code-label" id="securityLabel">CÓDIGO DE SEGURIDAD</span>
-        <div class="security-code-digits">
-          <div class="digit" id="digit1">0</div>
-          <div class="digit" id="digit2">3</div>
-          <div class="digit" id="digit3">8</div>
-        </div>
-      </div>
+  <!-- Texto dentro del corazón -->
+  <div class="heart-inside-text" id="heartText"></div>
 
-      <div class="transaction-data">Datos de la transacción</div>
-      <div class="data-row">
-        <strong>Nro. de celular</strong>
-        <span id="cellNumber">*** *** 832</span>
-      </div>
-      <div class="data-row">
-        <strong>Destino</strong>
-        <span id="destination">Yape</span>
-      </div>
-      <div class="data-row">
-        <strong>Nro. de operación</strong>
-        <span id="operationId">18081038</span>
-      </div>
-      <div class="data-row">
-        <strong>Mensaje</strong>
-        <span id="messageText">Gracias por el trabajo 😊</span>
-      </div>
-    </div>
-
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <img src="https://i.postimg.cc/Pfp6yX1b/1755961471955.jpg" alt="Anuncio 1">
-        </div>
-        <div class="swiper-slide">
-          <img src="https://i.postimg.cc/5yCn2gfK/1755961504718.jpg" alt="Anuncio 2">
-        </div>
-
-    <div class="footer">
-      By AnthZz Berrocal | BerMatMods
-    </div>
+  <!-- Botón del menú: 3 rayas BLANCAS, GRANDES y VISIBLES -->
+  <div class="menu-toggle" id="menuToggle">
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
   </div>
 
-  <!-- MENÚ DE 3 RAYAS -->
-  <div class="menu-overlay" id="menuOverlay">
-    <div class="menu">
-      <div class="app-logo">
-        <img src="https://i.postimg.cc/sgkfBDPn/IMG-20250826-WA0338.jpg" alt="Logo App">
-      </div>
-      <div class="menu-header">BerMatMods Recibo Editor Pro</div>
+  <!-- Panel del menú -->
+  <div class="menu-panel" id="menuPanel">
+    <button class="close-btn" id="closeMenu">&times;</button>
+    <h3>¿Quieres un proyecto personalizado?</h3>
+    <a href="https://wa.me/51937556459" target="_blank">
+      <i class="fab fa-whatsapp"></i>
+      <span>Escríbeme al WhatsApp</span>
+    </a>
+  </div>
 
-      <!-- Apps -->
-      <div class="menu-category">📱 Apps de Pago</div>
-      <ul class="menu-list">
-        <li onclick="switchApp('yape')">Yape</li>
-        <li onclick="switchApp('plin')">Plin</li>
-        <li onclick="switchApp('bim')">Bim</li>
-        <li onclick="switchApp('tunki')">Tunki</li>
-        <li onclick="switchApp('lucy')">Lucy</li>
-      </ul>
-
-      <!-- Bancos -->
-      <div class="menu-category">🏦 Transferencias</div>
-      <ul class="menu-list">
-        <li onclick="switchApp('bcp')">BCP</li>
-        <li onclick="switchApp('bbva')">BBVA</li>
-        <li onclick="switchApp('interbank')">Interbank</li>
-        <li onclick="switchApp('scotiabank')">Scotiabank</li>
-        <li onclick="switchApp('banbif')">BanBif</li>
-      </ul>
-
-      <!-- Mensajería -->
-      <div class="menu-category">💬 Mensajes</div>
-      <ul class="menu-list">
-        <li onclick="switchApp('whatsapp')">WhatsApp</li>
-        <li onclick="switchApp('telegram')">Telegram</li>
-      </ul>
-
-      <!-- Edición -->
-      <div class="menu-category">✏️ Edición</div>
-      <ul class="menu-list">
-        <li onclick="promptEdit('amount')">Editar monto</li>
-        <li onclick="promptEdit('name')">Editar nombre</li>
-        <li onclick="promptEdit('cell')">Editar número</li>
-        <li onclick="promptEdit('op')">Editar operación</li>
-        <li onclick="promptEdit('message')">Editar mensaje</li>
-      </ul>
-
-      <!-- Exportar -->
-      <div class="menu-category">📤 Exportar</div>
-      <ul class="menu-list">
-        <li onclick="downloadImage()">Descargar PNG</li>
-        <li onclick="downloadPDF()">Descargar PDF</li>
-      </ul>
-
-      <!-- Ajustes -->
-      <div class="menu-category">⚙️ Ajustes</div>
-      <ul class="menu-list">
-        <li class="switch-row">
-          Modo Oscuro
-          <label class="switch">
-            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-            <span class="slider"></span>
-          </label>
-        </li>
-        <li class="switch-row">
-          Idioma: <span id="langText">Español</span>
-          <button onclick="toggleLang()" style="background:var(--title-color);color:white;border:none;padding:4px 8px;border-radius:8px;">Cambiar</button>
-        </li>
-      </ul>
-
-      <!-- Más -->
-      <div class="menu-category">ℹ️ Más</div>
-      <ul class="menu-list">
-        <li onclick="showInfo()">Acerca de BerMatMods</li>
-        <li onclick="showHistory()">Historial de Ediciones</li>
-        <li onclick="addShortcut()">Añadir a inicio (PWA)</li>
-      </ul>
-
-      <div class="close-menu" onclick="closeMenu()" style="text-align:center;margin-top:16px;color:var(--title-color);cursor:pointer;">Cerrar menú</div>
-    </div>
+  <!-- Firma -->
+  <div class="footer">
+    by AnthZz Berrocal BerMatMods
   </div>
 
   <script>
-    let currentApp = 'yape';
-    let darkMode = false;
-    let lang = 'es';
-    const history = [];
+    /* ===========================================================
+       ANIMACIÓN DEL CORAZÓN + MENÚ + TEXTO DINÁMICO
+       (Código original, optimizado y funcional)
+       =========================================================== */
+    (() => {
+      const canvas = document.getElementById('c');
+      const ctx = canvas.getContext('2d');
+      const textEl = document.getElementById('heartText');
+      const menuToggle = document.getElementById('menuToggle');
+      const menuPanel = document.getElementById('menuPanel');
+      const closeMenu = document.getElementById('closeMenu');
 
-    const apps = {
-      yape: { logo: 'https://i.imgur.com/qWkOuKq.png', bg: '#69009A', titleColor: '#69009A', title: '¡Yapeaste!', security: 'CÓDIGO DE SEGURIDAD', destination: 'Yape' },
-      plin: { logo: 'https://i.postimg.cc/63yX0LdC/plin-logo.png', bg: '#00A651', titleColor: '#00A651', title: '¡Plinaste!', security: 'CÓDIGO DE VERIFICACIÓN', destination: 'Plin' },
-      bim: { logo: 'https://i.postimg.cc/SsV8LhXr/bim-logo.png', bg: '#1374F3', titleColor: '#1374F3', title: '¡Bimeaste!', security: 'CÓDIGO DE SEGURIDAD', destination: 'Bim' },
-      tunki: { logo: 'https://i.postimg.cc/XYv5BkLg/tunki-logo.png', bg: '#FF6B00', titleColor: '#FF6B00', title: 'Transferencia exitosa', security: 'Código de operación', destination: 'Tunki' },
-      lucy: { logo: 'https://i.postimg.cc/8cXJ0Z7v/lucy-logo.png', bg: '#9C27B0', titleColor: '#9C27B0', title: 'Pago realizado', security: 'Número de operación', destination: 'Lucy' },
-      bcp: { logo: 'https://i.postimg.cc/9Q1d0W3k/bcp-logo.png', bg: '#E60012', titleColor: '#E60012', title: 'Transferencia exitosa', security: 'Código de operación', destination: 'BCP' },
-      bbva: { logo: 'https://i.postimg.cc/7Z0K2VrN/bbva-logo.png', bg: '#F7931E', titleColor: '#F7931E', title: 'Pago realizado', security: 'Código de confirmación', destination: 'BBVA' },
-      interbank: { logo: 'https://i.postimg.cc/25jDvq9Z/interbank-logo.png', bg: '#0039A6', titleColor: '#0039A6', title: 'Transferencia completada', security: 'Número de operación', destination: 'Interbank' },
-      scotiabank: { logo: 'https://i.postimg.cc/441N1k8W/scotia-logo.png', bg: '#0062AC', titleColor: '#0062AC', title: 'Transferencia exitosa', security: 'Número de transacción', destination: 'Scotiabank' },
-      banbif: { logo: 'https://i.postimg.cc/65VvqR2d/banbif-logo.png', bg: '#009640', titleColor: '#009640', title: 'Transferencia completada', security: 'Código de operación', destination: 'BanBif' },
-      whatsapp: { logo: 'https://i.postimg.cc/441N1k8W/whatsapp-logo.png', bg: '#128C7E', titleColor: '#128C7E', title: 'Mensaje enviado', security: 'Hora', destination: 'WhatsApp' },
-      telegram: { logo: 'https://i.postimg.cc/441N1k8W/telegram-logo.png', bg: '#0088cc', titleColor: '#0088cc', title: 'Mensaje enviado', security: 'Hora', destination: 'Telegram' }
-    };
+      // Resize canvas (Hi-DPI)
+      const resize = () => {
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        canvas.width = Math.floor(innerWidth * dpr);
+        canvas.height = Math.floor(innerHeight * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+      window.addEventListener('resize', resize);
+      resize();
 
-    function switchApp(app) {
-      if (!apps[app]) return;
-      currentApp = app;
-      const data = apps[app];
-      document.body.style.setProperty('--bg', data.bg);
-      document.body.style.setProperty('--title-color', data.titleColor);
-      document.getElementById('appLogo').src = data.logo;
-      document.getElementById('operationTitle').innerText = data.title;
-      document.getElementById('securityLabel').innerText = data.security;
-      document.getElementById('destination').innerText = data.destination;
-      closeMenu();
-    }
+      // Ecuación del corazón
+      const heartPoint = (t, scale = 12) => {
+        const x = 16 * Math.sin(t) ** 3;
+        const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+        return { x: x * scale, y: -y * scale };
+      };
 
-    function openMenu() {
-      document.getElementById('menuOverlay').style.display = 'flex';
-    }
-
-    function closeMenu() {
-      document.getElementById('menuOverlay').style.display = 'none';
-    }
-
-    function promptEdit(field) {
-      const labels = { amount: 'Monto', name: 'Nombre', cell: 'Número', op: 'Operación', message: 'Mensaje' };
-      let value = prompt((lang === 'es' ? 'Editar ' : 'Edit ') + labels[field] + ':', document.getElementById({
-        'amount': 'displayAmount',
-        'name': 'displayName',
-        'cell': 'cellNumber',
-        'op': 'operationId',
-        'message': 'messageText'
-      }[field]).innerText);
-      if (value) {
-        document.getElementById({
-          'amount': 'displayAmount',
-          'name': 'displayName',
-          'cell': 'cellNumber',
-          'op': 'operationId',
-          'message': 'messageText'
-        }[field]).innerText = value;
-        saveToHistory();
+      const outline = [];
+      const OUTLINE_STEPS = 800;
+      for (let i = 0; i <= OUTLINE_STEPS; i++) {
+        const t = (i / OUTLINE_STEPS) * Math.PI * 2;
+        outline.push(heartPoint(t));
       }
-      closeMenu();
-    }
 
-    function saveToHistory() {
-      if (history.length >= 5) history.shift();
-      history.push(document.getElementById('captureArea').innerHTML);
-    }
+      // Corazón pequeño (60%)
+      const outlineSmall = outline.map(p => ({
+        x: p.x * 0.6,
+        y: p.y * 0.6
+      }));
 
-    function showHistory() {
-      alert((lang === 'es' ? 'Historial (últimos 5):' : 'History (last 5):') + '\n\n' + history.map((_, i) => `Recibo ${i+1}`).join('\n'));
-    }
+      // Partículas
+      const particles = [];
+      const MAX_PARTICLES = 900;
 
-    function downloadImage() {
-      html2canvas(document.getElementById('captureArea'), {
-        backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg'),
-        scale: 2
-      }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `recibo-${currentApp}.png`;
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-      closeMenu();
-    }
+      function spawnParticle(x, y, scale = 1) {
+        const vx = x;
+        const vy = y;
+        const mag = Math.hypot(vx, vy) || 1;
+        const speed = 0.015 + Math.random() * 0.035;
+        const life = 700 + Math.random() * 900;
 
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      html2canvas(document.getElementById('captureArea'), { scale: 2 }).then(canvas => {
-        const img = canvas.toDataURL("image/png");
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const width = pdf.internal.pageSize.getWidth();
-        const height = (canvas.height * width) / canvas.width;
-        pdf.addImage(img, 'PNG', 0, 0, width, height);
-        pdf.save(`recibo-${currentApp}.pdf`);
-      });
-      closeMenu();
-    }
-
-    function toggleDarkMode() {
-      darkMode = !darkMode;
-      document.body.classList.toggle('dark-mode', darkMode);
-    }
-
-    function toggleLang() {
-      lang = lang === 'es' ? 'en' : 'es';
-      document.getElementById('langText').innerText = lang === 'es' ? 'Español' : 'English';
-    }
-
-    function showInfo() {
-      alert("BerMatMods Recibo Editor Pro\nBy AnthZz Berrocal\nVersión 2.0\nSolo para fines educativos.");
-    }
-
-    function addShortcut() {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(() => {
-          alert('App lista para instalarse. Usa el botón "Añadir a inicio" de tu navegador.');
+        particles.push({
+          x, y,
+          vx: (vx / mag) * (speed * (40 + Math.random() * 40)) * scale,
+          vy: (vy / mag) * (speed * (40 + Math.random() * 40)) * scale,
+          r: 2 + Math.random() * 2.5,
+          born: performance.now(),
+          life,
+          huePick: Math.random()
         });
+        if (particles.length > MAX_PARTICLES) particles.shift();
       }
-    }
 
-    const swiper = new Swiper('.swiper-container', {
-      loop: true,
-      autoplay: { delay: 3000, disableOnInteraction: false },
-      pagination: { el: '.swiper-pagination', clickable: true }
-    });
+      // Dibujar corazón neón
+      function drawNeonHeart(cx, cy, outlinePoints, offsetX = 0, offsetY = 0, scaleOutline = 1) {
+        ctx.save();
+        ctx.translate(cx + offsetX, cy + offsetY);
+        ctx.beginPath();
+        for (let i = 0; i < outlinePoints.length; i++) {
+          const p = outlinePoints[i];
+          if (i === 0) ctx.moveTo(p.x * scaleOutline, p.y * scaleOutline);
+          else ctx.lineTo(p.x * scaleOutline, p.y * scaleOutline);
+        }
+        ctx.closePath();
 
-    function updateDateTime() {
-      const now = new Date();
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      let date = now.toLocaleDateString(lang, options);
-      document.getElementById('dateText').innerText = (lang === 'es' ? '📅 ' : '📅 ') + date;
+        const grad = ctx.createLinearGradient(-200, -200, 200, 200);
+        grad.addColorStop(0, getNeon(0.0));
+        grad.addColorStop(0.5, getNeon(0.5));
+        grad.addColorStop(1, getNeon(1.0));
 
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      const ampm = hour >= 12 ? (lang === 'es' ? 'p.m.' : 'PM') : (lang === 'es' ? 'a.m.' : 'AM');
-      const formattedHour = hour % 12 || 12;
-      const formattedMinute = minute.toString().padStart(2, '0');
-      document.getElementById('timeText').innerText = `⏰ ${formattedHour}:${formattedMinute} ${ampm}`;
-    }
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 3;
+        ctx.shadowColor = grad;
+        ctx.shadowBlur = 25;
+        ctx.stroke();
 
-    window.onload = () => {
-      switchApp('yape');
-      updateDateTime();
-      saveToHistory();
-    };
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1.2;
+        ctx.globalAlpha = 0.75;
+        ctx.stroke();
 
-    setInterval(updateDateTime, 60000);
-  </script>
+        ctx.restore();
+      }
 
-  <!-- PWA Manifest -->
-  <script>
-    document.getElementById('manifest').href = 'data:application/json,' + encodeURIComponent(JSON.stringify({
-      "name": "BerMatMods Recibo Editor",
-      "short_name": "Recibo Editor",
-      "start_url": ".",
-      "display": "standalone",
-      "background_color": "#69009A",
-      "theme_color": "#69009A",
-      "icons": [{ "src": "https://i.postimg.cc/sgkfBDPn/IMG-20250826-WA0338.jpg", "sizes": "192x192", "type": "image/jpg" }]
-    }));
+      // Gradientes de color
+      function getNeon(t) {
+        if (t < 0.5) {
+          const m = t / 0.5;
+          return mix('#ff2bd6', '#a84dff', m);
+        } else {
+          const m = (t - 0.5) / 0.5;
+          return mix('#a84dff', '#27e0ff', m);
+        }
+      }
+
+      function mix(a, b, t) {
+        const pa = hexToRgb(a), pb = hexToRgb(b);
+        const r = Math.round(pa.r + (pb.r - pa.r) * t);
+        const g = Math.round(pa.g + (pb.g - pa.g) * t);
+        const b2 = Math.round(pa.b + (pb.b - pa.b) * t);
+        return `rgb(${r},${g},${b2})`;
+      }
+
+      function hexToRgb(hex) {
+        const v = parseInt(hex.replace('#', ''), 16);
+        return { r: (v >> 16) & 255, g: (v >> 8) & 255, b: v & 255 };
+      }
+
+      // === ANIMACIÓN DE TEXTO DENTRO DEL CORAZÓN ===
+      const lovePhrases = [
+        "Para usted mi Amor Yorchi 💖",
+        "Tu mirada es mi hogar 🌙",
+        "Contigo, todo es amor ✨",
+        "Eres mi niña hermosa 🌹",
+        "Mi corazón late por ti 💓",
+        "Eres mi paz y mi locura 💫",
+        "Nada es más hermosa que tú 💎",
+        "Eres mi eterno sueño 💭",
+        "Te amo muchísimo más cada día 🌻",
+        "Eres mi universo entero 🌌"
+      ];
+
+      let currentPhraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      const textSpeed = 100;
+      const deleteSpeed = 50;
+      const pauseTime = 1500;
+
+      function typeWriter() {
+        const currentPhrase = lovePhrases[currentPhraseIndex];
+        if (isDeleting) {
+          textEl.textContent = currentPhrase.substring(0, charIndex - 1);
+          charIndex--;
+        } else {
+          textEl.textContent = currentPhrase.substring(0, charIndex + 1);
+          charIndex++;
+        }
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+          isDeleting = true;
+          setTimeout(typeWriter, pauseTime);
+          return;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          currentPhraseIndex = (currentPhraseIndex + 1) % lovePhrases.length;
+        }
+
+        const speed = isDeleting ? deleteSpeed : textSpeed;
+        setTimeout(typeWriter, speed);
+      }
+
+      // Mostrar texto con fade-in
+      setTimeout(() => {
+        textEl.style.opacity = 1;
+        typeWriter();
+      }, 1000);
+
+      // Animación principal
+      let last = performance.now();
+      function tick(now) {
+        const dt = now - last; last = now;
+
+        ctx.fillStyle = 'rgba(0,0,0,0.20)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const cx = innerWidth / 2;
+        const cy = innerHeight / 2;
+
+        drawNeonHeart(cx, cy, outline, 0, 0, 1);
+        drawNeonHeart(cx, cy, outlineSmall, 180, 120, 1);
+
+        const spawnCount = 6;
+        for (let i = 0; i < spawnCount; i++) {
+          const p = outline[(Math.random() * outline.length) | 0];
+          spawnParticle(p.x, p.y, 1);
+
+          if (Math.random() > 0.6) {
+            const pSmall = outlineSmall[(Math.random() * outlineSmall.length) | 0];
+            spawnParticle(pSmall.x, pSmall.y, 0.6);
+          }
+        }
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          const age = now - p.born;
+          if (age > p.life) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          const fade = 1 - age / p.life;
+          p.x += p.vx * dt * 0.016;
+          p.y += p.vy * dt * 0.016;
+
+          ctx.save();
+          ctx.translate(cx, cy);
+
+          const neon = p.huePick < 0.33 ? '#ff2bd6' :
+                      p.huePick < 0.66 ? '#a84dff' : '#27e0ff';
+
+          ctx.fillStyle = neon;
+          ctx.globalAlpha = Math.max(0, fade);
+          ctx.shadowColor = neon;
+          ctx.shadowBlur = 18;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * (0.5 + fade), 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.globalAlpha = Math.max(0, fade * 0.6);
+          ctx.shadowBlur = 0;
+          ctx.strokeStyle = neon;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x - p.vx * 0.08, p.y - p.vy * 0.08);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+
+          ctx.restore();
+        }
+
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+
+      // Interacción: clic → partículas
+      const boom = (mx, my) => {
+        mx -= innerWidth / 2;
+        my -= innerHeight / 2;
+
+        for (let i = 0; i < 120; i++) {
+          particles.push({
+            x: mx, y: my,
+            vx: (Math.random() - 0.5) * 9,
+            vy: (Math.random() - 0.5) * 9,
+            r: 1.5 + Math.random() * 2,
+            born: performance.now(),
+            life: 500 + Math.random() * 600,
+            huePick: Math.random()
+          });
+        }
+
+        const smallX = mx + 180;
+        const smallY = my + 120;
+        for (let i = 0; i < 60; i++) {
+          particles.push({
+            x: smallX, y: smallY,
+            vx: (Math.random() - 0.5) * 7,
+            vy: (Math.random() - 0.5) * 7,
+            r: 1 + Math.random() * 1.5,
+            born: performance.now(),
+            life: 400 + Math.random() * 500,
+            huePick: Math.random()
+          });
+        }
+      };
+
+      canvas.addEventListener('click', e => boom(e.clientX, e.clientY));
+      canvas.addEventListener('touchstart', e => {
+        const t = e.touches[0];
+        boom(t.clientX, t.clientY);
+      }, { passive: true });
+
+      // === MENÚ INTERACTIVO ===
+      menuToggle.addEventListener('click', () => {
+        menuPanel.classList.add('open');
+      });
+
+      closeMenu.addEventListener('click', () => {
+        menuPanel.classList.remove('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuPanel.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuPanel.classList.remove('open');
+        }
+      });
+
+    })();
   </script>
 </body>
 </html>
